@@ -1,0 +1,4514 @@
+{
+  "generatedAt": "2026-10-05T12:51:33.449Z",
+  "provider": "arjum",
+  "keyUsedForAudit": "key#1",
+  "sessionDateUsed": "2026-10-02",
+  "audit": {
+    "httpCalls": {
+      "value": 75,
+      "status": "exact",
+      "basis": "penghitung budget audit (setiap percobaan HTTP, termasuk retry)"
+    },
+    "httpOk": 75,
+    "hardBudget": 100,
+    "quotaUnitsPerDataCall": {
+      "value": 1,
+      "status": "exact",
+      "basis": "penurunan x-ratelimit-remaining antar panggilan berurutan pada key yang sama (72 pengamatan; semua = 1 termasuk respons kosong)"
+    },
+    "healthCostsQuota": {
+      "value": 0,
+      "status": "exact",
+      "basis": "search(remaining 900) → health → search(remaining 899): selisih hanya milik search"
+    },
+    "contaminationNote": "Audit memakai key#1 saja; worker aplikasi memilih key acak dan menunggu sampai 17.00 WIB selama audit (16.36–16.45 WIB). Pengukuran biaya per panggilan tidak tercemar pada rentang itu (tidak ada penurunan ganda)."
+  },
+  "instruments": {
+    "current": {
+      "value": 963,
+      "status": "exact",
+      "basis": "market-cap date=2026-10-02, 20 halaman, 963 baris, metadata total 963"
+    },
+    "duplicates": [],
+    "paginationConsistent": {
+      "expectedPages": 20,
+      "totalPagesMatches": true,
+      "allPagesSeen": true,
+      "rowsMatchTotal": true
+    },
+    "datasetDate": "2026-10-02",
+    "list_2025_01_02": {
+      "value": 947,
+      "status": "exact",
+      "basis": "metadata total 947"
+    },
+    "list_2020_01_02_total": {
+      "value": 671,
+      "status": "exact",
+      "basis": "metadata total halaman 1 (kode tidak dikumpulkan lengkap)"
+    },
+    "inListOn2025ButNotNow": [
+      "CNTB",
+      "CNTX",
+      "FORZ",
+      "FREN",
+      "HDTX",
+      "JKSW",
+      "KPAL",
+      "KPAS",
+      "KRAH",
+      "MAMI",
+      "MAMIP",
+      "MASA",
+      "MFIN",
+      "MYRX",
+      "MYRXP",
+      "NIPS",
+      "PRAS"
+    ],
+    "everListedSince2020": {
+      "value": 980,
+      "status": "lower_bound",
+      "basis": "gabungan daftar kini + 2025-01-02; tanggal lain belum diambil (20 panggilan per tanggal)"
+    },
+    "instrumentTypes": {
+      "value": null,
+      "status": "unknown",
+      "basis": "respons tidak memuat jenis instrumen; daftar memuat kode non-4-huruf (mis. GOTOM, MAMIP, MYRXP)"
+    },
+    "delistedHistoryAccessible": {
+      "value": 1,
+      "status": "exact",
+      "basis": "FREN: data_available {\"start\":\"2020-01-02\",\"end\":\"2025-04-16\"}"
+    }
+  },
+  "setup": {
+    "instrumentList": {
+      "value": 20,
+      "status": "exact",
+      "basis": "1 panggilan per halaman per_page=50"
+    },
+    "ohlcvDailyAllHistory": {
+      "perStockFormula": "ceil(jumlah_sesi_i / 500) dengan jendela start_date/end_date (terbukti dihormati)",
+      "lowerBound": {
+        "value": 981,
+        "status": "lower_bound",
+        "basis": "≥1 per kode yang diketahui; BBCA terbukti >500 sesi (500 baris hanya sampai 2024-08-27, data mulai 2020-01-02)"
+      },
+      "upperBoundConditional": {
+        "value": 3920,
+        "status": "upper_bound_conditional",
+        "basis": "bila tidak ada saham dengan data sebelum 2020-01-02 (teramati pada 853 saham) dan sesi ≤ hari kerja (1762 hari kerja 2020-01-02..2026-10-02 → maks 4 panggilan/saham)"
+      },
+      "measuredStored": {
+        "value": 2991,
+        "status": "upper_bound_conditional",
+        "basis": "851 saham dengan data_available tersimpan; batas atas per saham dari hari kerja dalam rentangnya"
+      },
+      "exact": {
+        "value": null,
+        "status": "unknown",
+        "basis": "jumlah sesi per saham hanya diketahui dengan mengambil datanya"
+      }
+    },
+    "fundamentalsAll": {
+      "perStock": {
+        "value": 6,
+        "status": "exact",
+        "basis": "BBCA: count maksimum 18 periode < limit 40 → 1 panggilan per (3 jenis × 2 periode)"
+      },
+      "allCurrent": {
+        "value": 5778,
+        "status": "lower_bound",
+        "basis": "6 per instrumen kini; pasti bila tidak ada instrumen >40 periode (belum terukur selain BBCA); parameter year untuk periode sebelum 2022 belum diuji"
+      },
+      "projectNeed": {
+        "value": 1926,
+        "status": "lower_bound",
+        "basis": "fitur proyek (PER/PBV/ROE/ROA/NPM/DER) butuh INCOME_STATEMENT + BALANCE_SHEET kuartalan"
+      }
+    },
+    "brokerSummaryDailyArchive": {
+      "value": null,
+      "status": "unknown",
+      "basis": "1 panggilan per saham per sesi sejak broker_date_min 2020-01-02 = total sesi semua saham (belum terukur); kelengkapan broker per panggilan dibatasi broker_limit (default 20; all_data belum diuji)"
+    },
+    "insiders": {
+      "BBCA": {
+        "value": 9,
+        "status": "exact",
+        "basis": "total 85 baris, 10 per halaman"
+      },
+      "all": {
+        "value": 980,
+        "status": "lower_bound",
+        "basis": "≥1 halaman per kode; total per saham hanya dari halaman 1 masing-masing"
+      }
+    },
+    "doneDetails": {
+      "retention": {
+        "value": null,
+        "status": "unknown",
+        "basis": "tersedia 2026-09-01 (BBCA), kosong 2026-06-02/2026-03-02/2025-10-02 → batas awal di (2026-06-02, 2026-09-01]"
+      },
+      "pagesMeasuredExact": {
+        "value": 1001,
+        "status": "exact",
+        "basis": "BBCA 2026-10-02 + BBRI 2026-10-02 + BBCA 2026-09-01"
+      },
+      "totalsVsFreq": {
+        "doneDetails": {
+          "BBCA_session": 27304,
+          "BBRI_session": 38587,
+          "BBCA_2026_09_01": 34083
+        },
+        "freq": [
+          {
+            "code": "BBCA",
+            "date": "2026-10-02",
+            "frequency": 27296
+          },
+          {
+            "code": "BBCA",
+            "date": "2026-09-01",
+            "frequency": 34039
+          },
+          {
+            "code": "BBRI",
+            "date": "2026-10-02",
+            "frequency": 38582
+          }
+        ]
+      },
+      "estimatePricedStocksWindow": {
+        "value": 437924,
+        "status": "estimate",
+        "basis": "Σ ceil(freq/100), 752 saham × 24 sesi 2026-09-01..2026-10-02; freq teramati 5–44 lebih kecil dari total done-details → sedikit di bawah nyata"
+      },
+      "allMarket": {
+        "value": null,
+        "status": "unknown",
+        "basis": "freq saham lain belum tersimpan (backfill); retensi belum terukur"
+      }
+    },
+    "seasonalAnalysisPrice": {
+      "value": 963,
+      "status": "exact",
+      "basis": "1 panggilan per instrumen per snapshot untuk masing-masing endpoint (snapshot terkini, tidak bisa mundur)"
+    },
+    "screenerLatest": {
+      "value": 1,
+      "status": "exact",
+      "basis": "snapshot harian, cached_for_seconds 85918"
+    }
+  },
+  "sync": {
+    "ohlcvPerSession": {
+      "value": 963,
+      "status": "exact",
+      "basis": "1 panggilan per instrumen aktif (limit ≥20 → overlap koreksi tanpa biaya tambahan); tidak ada batch OHLCV"
+    },
+    "closeOnlyBatchAlternative": {
+      "value": 20,
+      "status": "exact",
+      "basis": "market-cap?date= memberi close+market cap semua saham (tanpa OHLV/volume) per 20 panggilan"
+    },
+    "brokerSummaryPerSession": {
+      "value": 963,
+      "status": "exact",
+      "basis": "1 panggilan per saham per sesi (start_date=end_date)"
+    },
+    "doneDetailsPerSessionPricedStocks": {
+      "value": 15061,
+      "status": "estimate",
+      "basis": "Σ ceil(freq/100) 739 saham pada 2026-10-02"
+    },
+    "doneDetailsPerSessionAll": {
+      "value": null,
+      "status": "unknown",
+      "basis": "butuh freq semua saham (tersedia setelah backfill) atau halaman 1 per saham"
+    },
+    "fundamentalsPerRefresh": {
+      "value": 1926,
+      "status": "exact",
+      "basis": "2 per saham untuk kebutuhan proyek; frekuensi refresh = variabel (musim laporan)"
+    },
+    "universePerRefresh": {
+      "value": 20,
+      "status": "exact",
+      "basis": "per refresh daftar"
+    },
+    "intradayPricePerPoll": {
+      "value": 963,
+      "status": "exact",
+      "basis": "/api/price per saham per interval; interval = variabel"
+    }
+  },
+  "database": {
+    "live_instruments": 957,
+    "priced_instruments": 851,
+    "bars": 253540,
+    "first_date": "2025-07-08",
+    "last_date": "2026-10-05",
+    "duplicate_bars": 0,
+    "live_financial_facts": 0,
+    "live_announcements": 0
+  },
+  "dataAvailable50": [
+    {
+      "code": "AADI",
+      "start": "2024-12-05",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "AALI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ABBA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ABDA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ABMM",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ACES",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ACRO",
+      "start": "2024-01-11",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ACST",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ADCP",
+      "start": "2022-02-23",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ADES",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ADHI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ADMF",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ADMG",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ADMR",
+      "start": "2022-01-03",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ADRO",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "AEGS",
+      "start": "2023-09-11",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "AGAR",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "AGII",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "AGRO",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "AGRS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "AHAP",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "AIMS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "AISA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "AKKU",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "AKPI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "AKRA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "AKSI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ALDO",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ALII",
+      "start": "2024-02-07",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ALKA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ALMI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ALTO",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "AMAG",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "AMAN",
+      "start": "2020-03-13",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "AMAR",
+      "start": "2020-01-09",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "AMFG",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "AMIN",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "AMMN",
+      "start": "2023-07-07",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "AMMS",
+      "start": "2022-08-04",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "AMOR",
+      "start": "2020-01-14",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "AMRT",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ANDI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ANJT",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ANTM",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "APEX",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "APIC",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "APII",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "APLI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "APLN",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ARCI",
+      "start": "2021-06-28",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "AREA",
+      "start": "2024-04-01",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ARGO",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ARII",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ARKA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ARKO",
+      "start": "2022-07-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ARMY",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ARNA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ARTA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ARTI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ARTO",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ASBI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ASDM",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ASGR",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ASHA",
+      "start": "2022-05-27",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ASII",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ASJT",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ASLC",
+      "start": "2022-01-25",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ASLI",
+      "start": "2024-01-05",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ASMI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ASPI",
+      "start": "2020-02-17",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ASPR",
+      "start": "2025-07-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ASRM",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ASSA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ATAP",
+      "start": "2020-12-11",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ATIC",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ATLA",
+      "start": "2024-04-16",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "AUTO",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "AVIA",
+      "start": "2021-12-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "AWAN",
+      "start": "2023-04-18",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "AXIO",
+      "start": "2022-07-20",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "AYAM",
+      "start": "2023-11-30",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "AYLS",
+      "start": "2020-02-12",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BABP",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BABY",
+      "start": "2023-09-07",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BACA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BACH",
+      "start": "2026-07-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BAIK",
+      "start": "2024-02-15",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BALI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BANK",
+      "start": "2021-02-01",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BAPA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BAPI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BATA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BATR",
+      "start": "2024-06-10",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BAUT",
+      "start": "2022-01-28",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BAYU",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BBCA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BBHI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BBKP",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BBLD",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BBMD",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BBNI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BBRI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BBRM",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BBSI",
+      "start": "2020-09-07",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BBSS",
+      "start": "2020-04-15",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BBTN",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BBYB",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BCAP",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BCIC",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BCIP",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BDKR",
+      "start": "2023-03-03",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BDMN",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BEBS",
+      "start": "2021-03-10",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BEEF",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BEER",
+      "start": "2023-01-06",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BEKS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BELI",
+      "start": "2022-11-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BELL",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BESS",
+      "start": "2020-03-09",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BEST",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BFIN",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BGTG",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BHAT",
+      "start": "2020-04-15",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BHIT",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BIKA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BIKE",
+      "start": "2022-03-21",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BIMA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BINA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BINO",
+      "start": "2021-11-25",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BIPI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BIPP",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BIRD",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BISI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BJBR",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BJTM",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BKDP",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BKSL",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BKSW",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BLES",
+      "start": "2024-07-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BLOG",
+      "start": "2025-07-10",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BLTA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BLTZ",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BLUE",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BMAS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BMBL",
+      "start": "2023-01-11",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BMHS",
+      "start": "2021-07-06",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BMRI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BMSR",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BMTR",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BNBA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BNBR",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BNGA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BNII",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BNLI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BOAT",
+      "start": "2024-11-12",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BOBA",
+      "start": "2021-11-01",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BOGA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BOLA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BOLT",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BOSS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BPFI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BPII",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BPTR",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BRAM",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BREN",
+      "start": "2023-10-09",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BRIS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BRMS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BRNA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BRPT",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BRRC",
+      "start": "2025-01-09",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BSBK",
+      "start": "2022-11-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BSDE",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BSIM",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BSML",
+      "start": "2021-12-16",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BSSR",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BSWD",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BTEK",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BTEL",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BTON",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BTPN",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BTPS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BUAH",
+      "start": "2022-08-09",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BUDI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BUKA",
+      "start": "2021-08-06",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BUKK",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BULL",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BUMI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BUVA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BVIC",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BWPT",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "BYAN",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CAKK",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CAMP",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CANI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CARE",
+      "start": "2020-03-13",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CARS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CASA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CASH",
+      "start": "2020-05-04",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CASS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CBDK",
+      "start": "2025-01-13",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CBMF",
+      "start": "2020-04-09",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CBPE",
+      "start": "2023-01-06",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CBRE",
+      "start": "2023-01-09",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CBUT",
+      "start": "2022-11-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CCSI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CDIA",
+      "start": "2025-07-09",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CEKA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CENT",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CFIN",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CGAS",
+      "start": "2024-01-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CHEK",
+      "start": "2025-07-10",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CHEM",
+      "start": "2022-07-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CHIP",
+      "start": "2023-02-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CINT",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CITA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CITY",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CLAY",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CLEO",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CLPI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CMNP",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CMNT",
+      "start": "2021-09-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CMPP",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CMRY",
+      "start": "2021-12-06",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CNKO",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CNMA",
+      "start": "2023-08-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "COAL",
+      "start": "2022-09-07",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "COCO",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "COIN",
+      "start": "2025-07-09",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "COWL",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CPIN",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CPRI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CPRO",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CRAB",
+      "start": "2022-08-10",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CRSN",
+      "start": "2023-07-10",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CSAP",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CSIS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CSMI",
+      "start": "2020-04-09",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CSRA",
+      "start": "2020-01-09",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CTBN",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CTRA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CTTH",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CUAN",
+      "start": "2023-03-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "CYBR",
+      "start": "2023-08-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DAAZ",
+      "start": "2024-11-11",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DADA",
+      "start": "2020-02-14",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DART",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DATA",
+      "start": "2024-05-07",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DAYA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DCII",
+      "start": "2021-01-06",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DEAL",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DEFI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DEPO",
+      "start": "2021-11-25",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DEWA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DEWI",
+      "start": "2022-07-18",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DFAM",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DGIK",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DGNS",
+      "start": "2021-01-15",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DGWG",
+      "start": "2025-01-13",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DILD",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DIVA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DKFT",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DKHH",
+      "start": "2025-05-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DLTA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DMAS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DMMX",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DMND",
+      "start": "2020-01-22",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DNAR",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DNET",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DOID",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DOOH",
+      "start": "2023-05-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DOSS",
+      "start": "2024-08-07",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DPNS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DPUM",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DRMA",
+      "start": "2021-12-20",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DSFI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DSNG",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DSSA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DUCK",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DUTI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DVLA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DWGL",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "DYAN",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "EAST",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ECII",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "EDGE",
+      "start": "2021-02-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "EKAD",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ELIT",
+      "start": "2023-01-06",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ELPI",
+      "start": "2022-08-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ELSA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ELTY",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "EMAS",
+      "start": "2025-09-23",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "EMDE",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "EMMI",
+      "start": "2026-07-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "EMTK",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ENAK",
+      "start": "2022-02-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ENVY",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ENZO",
+      "start": "2020-09-14",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "EPAC",
+      "start": "2020-07-01",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "EPMT",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ERAA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ERAL",
+      "start": "2023-08-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ERTX",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ESIP",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ESSA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ESTA",
+      "start": "2020-03-09",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ESTI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ETWA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "EURO",
+      "start": "2022-08-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "EXCL",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "FAPA",
+      "start": "2021-01-04",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "FAST",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "FASW",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "FILM",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "FIMP",
+      "start": "2021-04-09",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "FIRE",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "FISH",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "FITT",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "FLMC",
+      "start": "2021-07-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "FMII",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "FOLK",
+      "start": "2023-08-07",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "FOOD",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "FORE",
+      "start": "2025-04-14",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "FORU",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "FPNI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "FUJI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "FUTR",
+      "start": "2023-02-27",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "FWCT",
+      "start": "2023-02-01",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "GAMA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "GDST",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "GDYR",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "GEMA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "GEMS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "GGRM",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "GGRP",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "GHON",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "GIAA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "GJTL",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "GLOB",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "GLVA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "GMFI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "GMTD",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "GOLD",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "GOLF",
+      "start": "2024-07-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "GOLL",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "GOOD",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "GOTO",
+      "start": "2022-04-11",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "GOTOM",
+      "start": "2024-11-13",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "GPRA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "GPSO",
+      "start": "2021-09-06",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "GRIA",
+      "start": "2023-08-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "GRPH",
+      "start": "2024-01-18",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "GRPM",
+      "start": "2023-07-10",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "GSMF",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "GTBO",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "GTRA",
+      "start": "2023-03-30",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "GTSI",
+      "start": "2021-09-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "GULA",
+      "start": "2022-08-03",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "GUNA",
+      "start": "2024-07-09",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "GWSA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "GZCO",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "HADE",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "HAIS",
+      "start": "2021-09-01",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "HAJJ",
+      "start": "2023-04-05",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "HALO",
+      "start": "2023-02-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "HATM",
+      "start": "2022-07-26",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "HBAT",
+      "start": "2023-08-07",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "HDFA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "HDIT",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "HEAL",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "HELI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "HERO",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "HEXA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "HGII",
+      "start": "2025-01-09",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "HILL",
+      "start": "2023-03-01",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "HITS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "HKMU",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "HMSP",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "HOKI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "HOME",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "HOMI",
+      "start": "2020-09-10",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "HOPE",
+      "start": "2021-05-24",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "HOTL",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "HRME",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "HRTA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "HRUM",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "HUMI",
+      "start": "2023-08-09",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "HYGN",
+      "start": "2024-02-13",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "IATA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "IBFN",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "IBOS",
+      "start": "2022-04-25",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "IBST",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ICBP",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ICON",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "IDEA",
+      "start": "2021-09-09",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "IDPR",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "IFII",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "IFSH",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "IGAR",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "IIKP",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "IKAI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "IKAN",
+      "start": "2020-02-12",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "IKBI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "IKPM",
+      "start": "2023-11-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "IMAS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "IMJS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "IMPC",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "INAF",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "INAI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "INCF",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "INCI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "INCO",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "INDF",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "INDO",
+      "start": "2020-01-13",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "INDR",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "INDS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "INDX",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "INDY",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "INET",
+      "start": "2023-07-24",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "INKP",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "INOV",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "INPC",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "INPP",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "INPS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "INRU",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "INTA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "INTD",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "INTP",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "IOTF",
+      "start": "2023-10-06",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "IPAC",
+      "start": "2021-06-30",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "IPCC",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "IPCM",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "IPOL",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "IPPE",
+      "start": "2021-12-09",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "IPTV",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "IRRA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "IRSX",
+      "start": "2023-02-07",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ISAP",
+      "start": "2022-12-09",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ISAT",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ISEA",
+      "start": "2024-07-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ISSP",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ITIC",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ITMA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ITMG",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "JARR",
+      "start": "2022-08-04",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "JAST",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "JATI",
+      "start": "2023-05-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "JAWA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "JAYA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "JECC",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "JECX",
+      "start": "2026-07-07",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "JELI",
+      "start": "2026-07-07",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "JGLE",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "JIHD",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "JKON",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "JMAS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "JPFA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "JRPT",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "JSKY",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "JSMR",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "JSPT",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "JTPE",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KAEF",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KAQI",
+      "start": "2025-03-10",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KARW",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KAYU",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KBAG",
+      "start": "2020-04-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KBLI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KBLM",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KBLV",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KBRI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KDSI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KDTN",
+      "start": "2022-11-09",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KEEN",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KEJU",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KETR",
+      "start": "2022-11-10",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KIAS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KICI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KIJA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KING",
+      "start": "2023-02-16",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KINO",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KIOS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KJEN",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KKES",
+      "start": "2022-08-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KKGI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KLAS",
+      "start": "2023-06-12",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KLBF",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KLIN",
+      "start": "2022-08-09",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KMDS",
+      "start": "2020-09-07",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KMTR",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KOBX",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KOCI",
+      "start": "2023-10-06",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KOIN",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KOKA",
+      "start": "2023-10-11",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KONI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KOPI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KOTA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KPIG",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KRAS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KREN",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KRYA",
+      "start": "2022-07-25",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KSIX",
+      "start": "2025-01-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "KUAS",
+      "start": "2021-10-25",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "LABA",
+      "start": "2021-06-10",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "LABS",
+      "start": "2024-07-10",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "LAJU",
+      "start": "2023-01-27",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "LAND",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "LAPD",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "LCGP",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "LCKM",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "LEAD",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "LFLO",
+      "start": "2021-04-07",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "LIFE",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "LINK",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "LION",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "LIVE",
+      "start": "2024-02-12",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "LMAS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "LMAX",
+      "start": "2023-08-09",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "LMPI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "LMSH",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "LOPI",
+      "start": "2023-10-11",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "LPCK",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "LPGI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "LPIN",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "LPKR",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "LPLI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "LPPF",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "LPPS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "LRNA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "LSIP",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "LTLS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "LUCK",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "LUCY",
+      "start": "2021-05-05",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MABA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MAGP",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MAHA",
+      "start": "2023-07-25",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MAIN",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MANG",
+      "start": "2024-01-11",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MAPA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MAPB",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MAPI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MARI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MARK",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MASB",
+      "start": "2021-06-30",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MAXI",
+      "start": "2023-06-12",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MAYA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MBAP",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MBMA",
+      "start": "2023-04-18",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MBSS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MBTO",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MCAS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MCOL",
+      "start": "2021-09-07",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MCOR",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MDIA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MDIY",
+      "start": "2024-12-19",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MDKA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MDKI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MDLA",
+      "start": "2025-04-15",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MDLN",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MDRN",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MEDC",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MEDS",
+      "start": "2022-08-10",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MEGA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MEJA",
+      "start": "2024-02-12",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MENN",
+      "start": "2023-04-18",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MERI",
+      "start": "2025-07-10",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MERK",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "META",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MFMI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MGLV",
+      "start": "2021-06-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MGNA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MGRO",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MHKI",
+      "start": "2024-04-16",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MICE",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MIDI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MIKA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MINA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MINE",
+      "start": "2025-03-10",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MIRA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MITI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MKAP",
+      "start": "2024-02-12",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MKNT",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MKPI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MKTR",
+      "start": "2022-11-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MLBI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MLIA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MLPL",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MLPT",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MMIX",
+      "start": "2022-12-06",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MMLP",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MNCN",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MOLI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MORA",
+      "start": "2022-08-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MPIX",
+      "start": "2024-02-07",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MPMX",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MPOW",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MPPA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MPRO",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MPXL",
+      "start": "2023-05-09",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MRAT",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MREI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MSIE",
+      "start": "2023-08-10",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MSJA",
+      "start": "2024-01-10",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MSKY",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MSTI",
+      "start": "2023-11-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MTDL",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MTEL",
+      "start": "2021-11-22",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MTFN",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MTLA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MTMH",
+      "start": "2022-04-20",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MTPS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MTRA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MTSM",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MTWI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MUTU",
+      "start": "2023-08-09",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MYOH",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MYOR",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "MYTX",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "NAIK",
+      "start": "2024-11-13",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "NANO",
+      "start": "2022-03-10",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "NASA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "NASI",
+      "start": "2021-12-13",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "NATO",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "NAYZ",
+      "start": "2023-02-06",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "NCKL",
+      "start": "2023-04-12",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "NELY",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "NEST",
+      "start": "2024-08-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "NETV",
+      "start": "2022-01-26",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "NFCX",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "NICE",
+      "start": "2024-01-09",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "NICK",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "NICL",
+      "start": "2021-07-09",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "NIKL",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "NINE",
+      "start": "2022-12-05",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "NIRO",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "NISP",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "NOBU",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "NPGF",
+      "start": "2021-04-14",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "NRCA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "NSSS",
+      "start": "2023-03-10",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "NTBK",
+      "start": "2022-02-09",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "NUSA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "NZIA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "OASA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "OBAT",
+      "start": "2025-01-13",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "OBMD",
+      "start": "2021-12-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "OCAP",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "OILS",
+      "start": "2021-09-06",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "OKAS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "OLIV",
+      "start": "2022-05-17",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "OMED",
+      "start": "2022-11-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "OMRE",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "OPMS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PACK",
+      "start": "2023-02-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PADA",
+      "start": "2022-12-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PADI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PALM",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PAMG",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PANI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PANR",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PANS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PART",
+      "start": "2024-07-05",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PBID",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PBRX",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PBSA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PCAR",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PDES",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PDPP",
+      "start": "2022-11-09",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PEGE",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PEHA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PEVE",
+      "start": "2023-01-24",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PGAS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PGEO",
+      "start": "2023-02-24",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PGJO",
+      "start": "2020-01-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PGLI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PGUN",
+      "start": "2020-07-07",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PICO",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PIPA",
+      "start": "2023-04-10",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PJAA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PJHB",
+      "start": "2025-11-06",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PKPK",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PLAN",
+      "start": "2020-09-15",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PLAS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PLIN",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PMJS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PMMP",
+      "start": "2020-12-18",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PMUI",
+      "start": "2025-07-10",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PNBN",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PNBS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PNGO",
+      "start": "2020-08-31",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PNIN",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PNLF",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PNSE",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "POLA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "POLI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "POLL",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "POLU",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "POLY",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "POOL",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PORT",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "POSA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "POWR",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PPGL",
+      "start": "2020-07-20",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PPRE",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PPRI",
+      "start": "2023-08-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PPRO",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PRAY",
+      "start": "2022-11-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PRDA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PRDL",
+      "start": "2026-07-09",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PRIM",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PSAB",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PSAT",
+      "start": "2025-07-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PSDN",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PSGO",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PSKT",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PSSI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PTBA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PTDU",
+      "start": "2020-12-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PTIS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PTMP",
+      "start": "2023-03-06",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PTMR",
+      "start": "2024-10-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PTPP",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PTPS",
+      "start": "2023-10-09",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PTPW",
+      "start": "2020-02-07",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PTRO",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PTSN",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PTSP",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PUDP",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PURA",
+      "start": "2020-01-29",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PURE",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PURI",
+      "start": "2020-09-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PWON",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PYFA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "PZZA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "RAAM",
+      "start": "2023-05-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "RAFI",
+      "start": "2022-08-05",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "RAJA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "RALS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "RANC",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "RANS",
+      "start": "2026-07-10",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "RATU",
+      "start": "2025-01-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "RBMS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "RCCC",
+      "start": "2022-08-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "RDTX",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "RELF",
+      "start": "2023-06-22",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "RELI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "RGAS",
+      "start": "2023-11-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "RICY",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "RIGS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "RIMO",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "RISE",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "RLCO",
+      "start": "2025-12-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "RMKE",
+      "start": "2021-12-07",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "RMKO",
+      "start": "2023-07-31",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ROCK",
+      "start": "2020-09-10",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "RODA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "RONY",
+      "start": "2020-04-09",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "ROTI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "RSCH",
+      "start": "2023-08-28",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "RSGK",
+      "start": "2021-09-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "RUIS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "RUNS",
+      "start": "2021-09-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SAFE",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SAGE",
+      "start": "2023-03-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SAME",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SAMF",
+      "start": "2020-03-31",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SAPX",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SATU",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SBAT",
+      "start": "2020-04-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SBMA",
+      "start": "2021-09-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SCCO",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SCMA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SCNP",
+      "start": "2020-09-07",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SCPI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SDMU",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SDPC",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SDRA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SEMA",
+      "start": "2022-01-10",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SFAN",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SGER",
+      "start": "2020-08-10",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SGRO",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SHID",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SHIP",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SICO",
+      "start": "2022-04-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SIDO",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SILO",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SIMA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SIMP",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SINI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SIPD",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SKBM",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SKLT",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SKRN",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SKYB",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SLIS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SMAR",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SMBR",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SMCB",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SMDM",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SMDR",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SMGA",
+      "start": "2024-01-30",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SMGR",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SMIL",
+      "start": "2023-05-12",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SMKL",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SMKM",
+      "start": "2022-03-09",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SMLE",
+      "start": "2024-01-10",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SMMA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SMMT",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SMRA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SMRU",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SMSM",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SNLK",
+      "start": "2021-03-29",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SOCI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SOFA",
+      "start": "2020-07-07",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SOHO",
+      "start": "2020-09-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SOLA",
+      "start": "2024-05-08",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SONA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SOSS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SOTS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SOUL",
+      "start": "2023-01-06",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SPMA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SPRE",
+      "start": "2024-07-03",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SPTO",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SQMI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SRAJ",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SRIL",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SRSN",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SRTG",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SSIA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SSMS",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SSTM",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "STAA",
+      "start": "2022-03-10",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "STAR",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "STRK",
+      "start": "2023-10-10",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "STTP",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SUGI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SULI",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SUNI",
+      "start": "2023-01-09",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SUPA",
+      "start": "2025-12-17",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SUPR",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SURE",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SURI",
+      "start": "2023-12-07",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SWAT",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "SWID",
+      "start": "2022-07-07",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "TALF",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "TAMA",
+      "start": "2020-02-10",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "TAMU",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "TAPG",
+      "start": "2021-04-12",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "TLKM",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "TPIA",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "UNTR",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    },
+    {
+      "code": "UNVR",
+      "start": "2020-01-02",
+      "end": "2026-10-05"
+    }
+  ]
+}

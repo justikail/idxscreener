@@ -1,0 +1,9 @@
+{
+  "_note": "Respons nyata GET /api/price/list?codes=BBCA,GOTO,ZZZQ (18 Okt 2026, Minggu). ZZZQ fiktif: dilewati penyedia tetapi tetap ditagih (X-Quota-Cost 3).",
+  "count": 2,
+  "stocks": {
+    "BBCA": { "code": "BBCA", "last_price": 5175, "freq": 185072, "lot": 12410982, "value": 6474934315000, "vwap": 5217.1, "change": -900, "change_pct": -14.81, "source_date": "2026-10-16", "data_ts": null, "quote_age_ms": null },
+    "GOTO": { "code": "GOTO", "last_price": 25, "freq": 61645, "lot": 426579721, "value": 1026997626200, "vwap": 24.08, "change": -2, "change_pct": -7.41, "source_date": "2026-10-16", "data_ts": null, "quote_age_ms": null }
+  },
+  "market": { "status": "weekend", "label": "Market tutup (weekend)", "next_open": "Senin 09:00 WIB" }
+}

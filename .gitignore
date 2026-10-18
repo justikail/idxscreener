@@ -1,0 +1,41 @@
+# dependencies
+node_modules/
+
+# next.js
+.next/
+out/
+
+# production
+build/
+dist/
+
+# env
+.env
+.env.local
+.env*.local
+
+# testing
+coverage/
+playwright-report/
+test-results/
+
+# tooling lokal (Claude Code session state, bukan bagian aplikasi)
+.claude/
+
+# Skrip probe manual pengguna: berisi dump respons/header dan pernah memuat
+# (sebagian) API key — jangan pernah ikut ter-commit.
+/test/
+
+# misc
+.DS_Store
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+/.run/
+
+# Penjadwal data berjalan di worker VPS (ihsg-worker); workflow lama tidak di-push.
+.github/workflows/

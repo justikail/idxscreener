@@ -1,0 +1,389 @@
+{
+  "provider": "arjum",
+  "probedAt": "2026-10-04T14:24:58.314Z",
+  "code": "BBCA",
+  "httpAttempts": 6,
+  "probeBudget": 10,
+  "localQuotaCounter": {
+    "before": 0,
+    "after": 6,
+    "dailyBudget": 800
+  },
+  "batchId": "arjum-probe-1791123892819",
+  "results": [
+    {
+      "step": "market-cap",
+      "ok": true,
+      "httpStatus": 200,
+      "contentType": "application/json",
+      "durationMs": 1138,
+      "attempts": 1,
+      "responseHeaders": {
+        "cf-cache-status": "DYNAMIC",
+        "content-type": "application/json",
+        "date": "Sun, 04 Oct 2026 14:24:55 GMT",
+        "x-ratelimit-limit": "1000",
+        "x-ratelimit-remaining": "999"
+      },
+      "shape": {
+        "date": "string",
+        "total": "number",
+        "page": "number",
+        "per_page": "number",
+        "total_pages": "number",
+        "data": [
+          {
+            "code": "string",
+            "name": "string",
+            "close": "number",
+            "listed_shares": "number",
+            "listed_shares_label": "string",
+            "market_cap": "number",
+            "market_cap_label": "string",
+            "turnover_ratio": "number",
+            "turnover_ratio_label": "string"
+          }
+        ]
+      },
+      "summary": {
+        "date": "2026-10-02",
+        "total": 963,
+        "total_pages": 20,
+        "rows": 50,
+        "sampleCodes": [
+          "BBCA",
+          "DCII",
+          "BBRI",
+          "BYAN",
+          "BREN"
+        ]
+      }
+    },
+    {
+      "step": "history-daily",
+      "ok": true,
+      "httpStatus": 200,
+      "contentType": "application/json",
+      "durationMs": 206,
+      "attempts": 1,
+      "responseHeaders": {
+        "cf-cache-status": "DYNAMIC",
+        "content-type": "application/json",
+        "date": "Sun, 04 Oct 2026 14:24:56 GMT",
+        "x-ratelimit-limit": "1000",
+        "x-ratelimit-remaining": "999"
+      },
+      "shape": {
+        "stock_code": "string",
+        "frame": "string",
+        "data_available": {
+          "start": "string",
+          "end": "string"
+        },
+        "rows": [
+          {
+            "date": "string",
+            "close": "number",
+            "change": "number",
+            "change_pct": "number",
+            "value": "number",
+            "volume": "number",
+            "freq": "number",
+            "f_buy": "number",
+            "f_sell": "number",
+            "n_foreign": "number",
+            "open": "number",
+            "high": "number",
+            "low": "number",
+            "avg": "number"
+          }
+        ]
+      },
+      "summary": {
+        "stock_code": "BBCA",
+        "frame": "daily",
+        "rows": 60,
+        "firstDate": "2026-07-09",
+        "lastDate": "2026-10-02",
+        "extraTopLevelKeys": [
+          "data_available"
+        ],
+        "lastRow": {
+          "date": "2026-10-02",
+          "open": 6000,
+          "high": 6150,
+          "low": 5975,
+          "close": 6100,
+          "change": 100,
+          "change_pct": 1.67,
+          "value": 798136850000,
+          "volume": 131920300,
+          "freq": 27296,
+          "avg": 6050.144291667014,
+          "f_buy": 100853800,
+          "f_sell": 93815300,
+          "n_foreign": 7038500
+        }
+      }
+    },
+    {
+      "step": "financial-statements",
+      "ok": true,
+      "httpStatus": 200,
+      "contentType": "application/json",
+      "durationMs": 143,
+      "attempts": 1,
+      "responseHeaders": {
+        "cf-cache-status": "DYNAMIC",
+        "content-type": "application/json",
+        "date": "Sun, 04 Oct 2026 14:24:56 GMT",
+        "x-ratelimit-limit": "1000",
+        "x-ratelimit-remaining": "998"
+      },
+      "shape": {
+        "stock_code": "string",
+        "report_type": "string",
+        "period": "string",
+        "count": "number",
+        "items": [
+          {
+            "year": "string",
+            "quarter": "string",
+            "label": "string",
+            "fetched_at": "string",
+            "data": "{…}"
+          }
+        ]
+      },
+      "summary": {
+        "report_type": "INCOME_STATEMENT",
+        "period": "quarterly",
+        "count": 4,
+        "periods": [
+          "2026Q1 (Q1 2026, fetched_at 2026-09-27 18:00:17)",
+          "2025Q4 (Q4 2025, fetched_at 2026-09-27 18:00:17)",
+          "2025Q3 (Q3 2025, fetched_at 2026-09-27 18:00:17)",
+          "2025Q2 (Q2 2025, fetched_at 2026-09-27 18:00:17)"
+        ],
+        "dataKeysSample": [
+          "pendapatan_dan_beban_operasional",
+          "laba_operasional",
+          "pendapatan_dan_beban_bukan_operasional",
+          "laba_rugi_sebelum_pajak_penghasilan",
+          "pendapatan_beban_pajak",
+          "laba_rugi_dari_operasi_yang_dilanjutkan",
+          "laba_rugi_dari_operasi_yang_dihentikan",
+          "laba_rugi",
+          "pendapatan_komprehensif_lainnya_sebelum_pajak",
+          "pajak_atas_pendapatan_komprehensif_lainnya",
+          "pendapatan_komprehensif_lainnya_setelah_pajak",
+          "laba_rugi_komprehensif"
+        ]
+      }
+    },
+    {
+      "step": "broker-summary",
+      "ok": true,
+      "httpStatus": 200,
+      "contentType": "application/json",
+      "durationMs": 172,
+      "attempts": 1,
+      "responseHeaders": {
+        "cf-cache-status": "DYNAMIC",
+        "content-type": "application/json",
+        "date": "Sun, 04 Oct 2026 14:24:57 GMT",
+        "x-ratelimit-limit": "1000",
+        "x-ratelimit-remaining": "999"
+      },
+      "shape": {
+        "stock_code": "string",
+        "brokers": [
+          {
+            "broker_code": "string",
+            "broker_name": "string",
+            "bval": "number",
+            "bvol": "number",
+            "bfrq": "number",
+            "sfrq": "number",
+            "sval": "number",
+            "svol": "number",
+            "nval": "number",
+            "nvol": "number"
+          }
+        ],
+        "broker_levels": [
+          {
+            "buy": "{…}",
+            "sell": "{…}"
+          }
+        ],
+        "broker_start_date": "string",
+        "broker_end_date": "string",
+        "broker_date_min": "string",
+        "broker_date_max": "string",
+        "broker_net": "boolean",
+        "flow": "string"
+      },
+      "summary": {
+        "broker_start_date": "2026-10-02",
+        "broker_end_date": "2026-10-02",
+        "brokers": 20
+      }
+    },
+    {
+      "step": "price",
+      "ok": true,
+      "httpStatus": 200,
+      "contentType": "application/json",
+      "durationMs": 135,
+      "attempts": 1,
+      "responseHeaders": {
+        "cf-cache-status": "DYNAMIC",
+        "content-type": "application/json",
+        "date": "Sun, 04 Oct 2026 14:24:57 GMT",
+        "x-ratelimit-limit": "1000",
+        "x-ratelimit-remaining": "998"
+      },
+      "shape": {
+        "code": "string",
+        "last_price": "number",
+        "freq": "number",
+        "lot": "number",
+        "value": "number",
+        "source_date": "string",
+        "data_ts": "null",
+        "served_ts": "string",
+        "market_state": "string",
+        "market_label": "string",
+        "no_trade_today": "boolean",
+        "quote_age_ms": "null"
+      },
+      "summary": {
+        "data_ts": null,
+        "served_ts": "21:24:57",
+        "source_date": "2026-10-02",
+        "no_trade_today": true,
+        "market_state": "weekend",
+        "market_label": "Market tutup (weekend)",
+        "quote_age_ms": null,
+        "keys": [
+          "data_ts",
+          "served_ts",
+          "source_date",
+          "no_trade_today",
+          "market_state",
+          "market_label",
+          "quote_age_ms",
+          "code",
+          "last_price",
+          "freq",
+          "lot",
+          "value"
+        ]
+      }
+    },
+    {
+      "step": "history-monthly-500",
+      "ok": true,
+      "httpStatus": 200,
+      "contentType": "application/json",
+      "durationMs": 174,
+      "attempts": 1,
+      "responseHeaders": {
+        "cf-cache-status": "DYNAMIC",
+        "content-type": "application/json",
+        "date": "Sun, 04 Oct 2026 14:24:57 GMT",
+        "x-ratelimit-limit": "1000",
+        "x-ratelimit-remaining": "997"
+      },
+      "shape": {
+        "stock_code": "string",
+        "frame": "string",
+        "data_available": {
+          "start": "string",
+          "end": "string"
+        },
+        "rows": [
+          {
+            "date": "string",
+            "close": "number",
+            "change": "number",
+            "change_pct": "number",
+            "value": "number",
+            "volume": "number",
+            "freq": "number",
+            "f_buy": "number",
+            "f_sell": "number",
+            "n_foreign": "number",
+            "open": "number",
+            "high": "number",
+            "low": "number",
+            "avg": "number"
+          }
+        ]
+      },
+      "summary": {
+        "frame": "monthly",
+        "rows": 82,
+        "firstDate": "2020-01-31",
+        "lastDate": "2026-10-02"
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "path": "/api/market-cap",
+      "attempt": 1,
+      "keyLabel": "key#5",
+      "httpStatus": 200,
+      "contentType": "application/json",
+      "durationMs": 1138,
+      "outcome": "ok"
+    },
+    {
+      "path": "/api/history/BBCA",
+      "attempt": 1,
+      "keyLabel": "key#3",
+      "httpStatus": 200,
+      "contentType": "application/json",
+      "durationMs": 206,
+      "outcome": "ok"
+    },
+    {
+      "path": "/api/financial-statements/BBCA",
+      "attempt": 1,
+      "keyLabel": "key#3",
+      "httpStatus": 200,
+      "contentType": "application/json",
+      "durationMs": 143,
+      "outcome": "ok"
+    },
+    {
+      "path": "/api/broker-summary/BBCA",
+      "attempt": 1,
+      "keyLabel": "key#4",
+      "httpStatus": 200,
+      "contentType": "application/json",
+      "durationMs": 172,
+      "outcome": "ok"
+    },
+    {
+      "path": "/api/price/BBCA",
+      "attempt": 1,
+      "keyLabel": "key#5",
+      "httpStatus": 200,
+      "contentType": "application/json",
+      "durationMs": 135,
+      "outcome": "ok"
+    },
+    {
+      "path": "/api/history/BBCA",
+      "attempt": 1,
+      "keyLabel": "key#3",
+      "httpStatus": 200,
+      "contentType": "application/json",
+      "durationMs": 174,
+      "outcome": "ok"
+    }
+  ]
+}

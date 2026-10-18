@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    /* Jaring pengaman: apa pun yang lolos keluar tidak boleh membuat halaman bergeser ke samping. */
+    overflow-x: clip;
+  }
+
+  body {
+    @apply bg-paper text-ink-900 font-sans antialiased;
+    /* Elemen full-bleed (pita ticker) tidak boleh memicu scroll horizontal. */
+    overflow-x: clip;
+    /* Serat kertas sangat halus: noise SVG statis, tanpa gambar eksternal. */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.09 0 0 0 0 0.08 0 0 0 0 0.06 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  ::selection {
+    @apply bg-kunyit-300 text-ink-950;
+  }
+
+  :focus-visible {
+    @apply outline outline-2 outline-offset-2 outline-kunyit-500;
+  }
+
+  /* Semua angka sejajar seperti tabel kurs. */
+  .num {
+    @apply font-mono;
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1, "zero" 1;
+  }
+}
+
+@layer components {
+  .rule-t {
+    @apply border-t border-ink-900;
+  }
+
+  .kicker {
+    @apply font-mono text-[11px] uppercase tracking-[0.18em] text-ink-500;
+  }
+
+  .section-title {
+    @apply font-display text-2xl font-semibold tracking-tight text-ink-900 sm:text-3xl;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-ticker,
+  .animate-rise,
+  .animate-tip-in {
+    animation: none !important;
+  }
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: #17140f;
+  color: #faf7f1;
+  padding: 0.5rem 1rem;
+  z-index: 50;
+}
+
+.skip-link:focus {
+  left: 0.5rem;
+  top: 0.5rem;
+}

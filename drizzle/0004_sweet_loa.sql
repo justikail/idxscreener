@@ -1,0 +1,1 @@
+ALTER TABLE "ingestion_runs" ADD COLUMN "note" text;

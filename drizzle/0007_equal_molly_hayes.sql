@@ -1,0 +1,1 @@
+ALTER TABLE "financial_facts" ALTER COLUMN "period_basis" SET DATA TYPE varchar(32);

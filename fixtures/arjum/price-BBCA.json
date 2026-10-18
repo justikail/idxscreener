@@ -1,0 +1,14 @@
+{
+ "lot": 0,
+ "code": "BBCA",
+ "freq": 0,
+ "value": 0,
+ "data_ts": null,
+ "served_ts": "21:24:57",
+ "last_price": 6100,
+ "source_date": "2026-10-02",
+ "market_label": "Market tutup (weekend)",
+ "market_state": "weekend",
+ "quote_age_ms": null,
+ "no_trade_today": true
+}

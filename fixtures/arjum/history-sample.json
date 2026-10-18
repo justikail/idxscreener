@@ -1,0 +1,12 @@
+{
+  "_note": "Fixture SINTETIS berbentuk respons GET /api/history/{code} sesuai skema yang teramati di audit-dashboard-invezgo-arjum.md §C.2 (field, satuan volume=lembar, value=Rupiah, hari tanpa transaksi volume/value/freq=0 dan avg=null). Kode CONTOH dan angka-angkanya fiktif. Ganti dengan sampel respons nyata yang disanitasi setelah probe live pertama.",
+  "stock_code": "CONTOH",
+  "frame": "daily",
+  "rows": [
+    { "date": "2026-09-14", "open": 1000, "high": 1030, "low": 990, "close": 1020, "change": 20, "change_pct": 2.0, "value": 2040000000, "volume": 2000000, "freq": 410, "avg": 1020, "f_buy": 300000, "f_sell": 250000, "n_foreign": 50000 },
+    { "date": "2026-09-15", "open": 1020, "high": 1040, "low": 1010, "close": 1035, "change": 15, "change_pct": 1.47, "value": 1552500000, "volume": 1500000, "freq": 322, "avg": 1035, "f_buy": 200000, "f_sell": 260000, "n_foreign": -60000 },
+    { "date": "2026-09-16", "open": 1035, "high": 1035, "low": 1035, "close": 1035, "change": 0, "change_pct": 0, "value": 0, "volume": 0, "freq": 0, "avg": null, "f_buy": 0, "f_sell": 0, "n_foreign": 0 },
+    { "date": "2026-09-17", "open": 1035, "high": 1060, "low": 1025, "close": 1050, "change": 15, "change_pct": 1.45, "value": 3150000000, "volume": 3000000, "freq": 615, "avg": 1050, "f_buy": 900000, "f_sell": 400000, "n_foreign": 500000 },
+    { "date": "2026-09-18", "open": 1050, "high": 1055, "low": 1000, "close": 1005, "change": -45, "change_pct": -4.29, "value": 4020000000, "volume": 4000000, "freq": 880, "avg": 1005, "f_buy": 100000, "f_sell": 1200000, "n_foreign": -1100000 }
+  ]
+}

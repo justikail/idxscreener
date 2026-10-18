@@ -1,0 +1,641 @@
+{
+  "$schema_note": "Laporan investigasi sumber data screener saham Indonesia. Semua field 'confidence' memakai skala: observed | documented | marketing_claim | inference | unknown.",
+  "meta": {
+    "judul": "Investigasi Sumber Data — Screener Saham Indonesia",
+    "tanggal_investigasi": "2026-09-20",
+    "jendela_pemeriksaan_utc": "05:10-06:10",
+    "jendela_pemeriksaan_wib": "12:10-13:10",
+    "metode": "Halaman publik + dokumentasi resmi via browser (Claude in Chrome) dan WebFetch",
+    "tidak_dilakukan": [
+      "pembelian paket",
+      "login ke akun manapun",
+      "pengiriman formulir",
+      "pemicuan worker/job (bulk_fetch.php sengaja tidak dibuka)",
+      "pengambilan kredensial atau key tersembunyi",
+      "polling berulang / pengambilan massal",
+      "pemanggilan API Invezgo dengan API key"
+    ],
+    "status_pembangunan": "dijeda, tidak ada kode yang ditulis"
+  },
+
+  "kesimpulan": {
+    "prototipe_privat": {
+      "invezgo": {
+        "verdict": "layak_secara_teknis_belum_terbukti_operasional",
+        "alasan_positif": [
+          "OpenAPI 3.0 publik nyata dengan 94 path",
+          "auth Bearer cocok untuk backend terjadwal",
+          "endpoint OHLCV harian historis ada: /analysis/chart/stock/{code}?from=&to=",
+          "seluruh kebutuhan awal punya endpoint"
+        ],
+        "alasan_negatif": [
+          "belum pernah dipanggil dengan API key berbayar",
+          "kualitas, kelengkapan, latensi belum teruji"
+        ]
+      },
+      "arjum_idx_edge": {
+        "verdict": "kandidat_serius_belum_teruji",
+        "catatan": "REST API gratis berkuota harian, 8 endpoint, identitas kini terverifikasi. Uji lebih dulu sebelum membayar Invezgo."
+      },
+      "idx_langsung": {
+        "verdict": "sumber_terkaya_tapi_tidak_dapat_diotomatisasi_dari_backend",
+        "catatan": "963 emiten dalam 1 request, tapi hanya berhasil dari sesi browser yang lolos Cloudflare"
+      }
+    },
+    "website_publik": {
+      "invezgo": {
+        "verdict": "tidak_layak_dengan_ketentuan_saat_ini",
+        "alasan": "Larangan eksplisit redistribusi/komersialisasi ulang; terms membatasi personal non-commercial use; tidak ada bukti Enterprise membuka hak redistribusi"
+      },
+      "arjum_idx_edge": {
+        "verdict": "belum_jelas",
+        "alasan": "Terms tidak memuat klausul redistribusi sama sekali; diam bukan izin; terms dapat berubah tanpa pemberitahuan"
+      },
+      "jalur_paling_bersih": {
+        "nama": "Lisensi Layanan Data BEI",
+        "verdict": "perlu_dijajaki",
+        "alasan": "Produk lisensi system-to-system resmi yang menyasar financial application developer dan fintech startup. Harga tidak dipublikasikan."
+      }
+    },
+    "rekomendasi_akhir": "Belum ada sumber tunggal yang memenuhi seluruh kebutuhan untuk website publik. Untuk prototipe privat ada dua jalur yang layak diuji. Jangan mulai ingestion produksi sebelum langkah uji minimum selesai."
+  },
+
+  "koreksi_pengetahuan_awal": [
+    {
+      "id": "K1",
+      "awal": "Daftar 20 endpoint untuk diverifikasi",
+      "temuan": "OpenAPI memuat 94 path; endpoint kunci tidak ada di halaman daftar endpoint dokumentasi",
+      "endpoint_tersembunyi": [
+        "/analysis/chart/stock/{code}",
+        "/analysis/chart/multi-time/{code}",
+        "/analysis/chart/index/{code}",
+        "/analysis/chart/stock/{indicator}/{code}",
+        "/analysis/running-trade/{code}",
+        "/analysis/price-table/{code}",
+        "/analysis/time-table/{code}",
+        "/analysis/price-diary/{code}",
+        "/analysis/price-seasonality/{code}",
+        "/analysis/notation",
+        "/analysis/momentum-chart/{code}",
+        "/analysis/intraday-inventory-chart/{code}",
+        "/batch/order-book/{code}",
+        "/batch/intraday-data/{code}",
+        "/batch/intraday-index/{code}",
+        "/usage/api",
+        "/usage/logs"
+      ],
+      "confidence": "observed",
+      "bukti": "E7"
+    },
+    {
+      "id": "K2",
+      "awal": "Histori maksimal 2 tahun untuk paket reguler",
+      "temuan": "Benar, tapi kedalaman Enterprise berbeda per dataset, bukan seragam 15 tahun",
+      "data_awal_enterprise": {
+        "harga_ohlcv": "2010-01-01",
+        "broker_summary": "2016-01-01",
+        "inventory_chart": "2016-01-01",
+        "foreign_top": "2010-01-01",
+        "price_seasonality": "2010-01-01",
+        "financial_statement": "2020-01-01",
+        "keystat": "2020-01-01",
+        "shareholder_ksei": "2009-03-01"
+      },
+      "confidence": "observed",
+      "bukti": "E7"
+    },
+    {
+      "id": "K3",
+      "awal": "Landing mengiklankan histori panjang",
+      "temuan": "Klaim '15+ Tahun Data Historis (2009-2026)' tidak didukung spesifikasi sendiri; fundamental hanya sejak 2020 bahkan di Enterprise",
+      "confidence": "marketing_claim_vs_observed",
+      "bukti": "E2, E7"
+    },
+    {
+      "id": "K4",
+      "awal": "Harga promosi dan periode tagihan harus diperiksa",
+      "temuan": "Harga promo adalah harga PER BULAN. Tahunan = 10x bulanan, dipasarkan 'Gratis 1 Bulan'. Toggle Bulan/Tahun di landing menampilkan angka identik.",
+      "confidence": "observed",
+      "bukti": "E2, E15"
+    },
+    {
+      "id": "K5",
+      "awal": "Jangan menyamakan paket aplikasi dengan paket API",
+      "temuan": "Terkonfirmasi tegas. /pricing hanya menampilkan paket aplikasi; paket API hanya di /data-api-saham-indonesia dan docs.",
+      "confidence": "observed",
+      "bukti": "E3"
+    },
+    {
+      "id": "K7",
+      "awal": "Snapshot kompetitor ~937 saham dan 10.674 baris kuartalan",
+      "temuan": "Snapshot terkini jauh lebih kecil: ~611 emiten, ~6.032 baris kuartalan, tahun 2022-2026",
+      "confidence": "observed",
+      "bukti": "E21"
+    },
+    {
+      "id": "K8",
+      "awal": "Identitas publik Arjum belum terverifikasi",
+      "temuan": "TERVERIFIKASI. Arjum = IDX Edge PRO, https://stock.arjum.com, auth header X-API-Key, 8 endpoint REST publik gratis",
+      "confidence": "observed",
+      "bukti": "E24, E27"
+    },
+    {
+      "id": "K9",
+      "awal": "finBuka memetakan src=1 ke Invezgo",
+      "temuan": "TIDAK DAPAT DIVERIFIKASI. File frontend tidak dilampirkan; index.html kompetitor dilindungi login; kata 'invezgo' tidak muncul sama sekali di halaman publik kompetitor",
+      "confidence": "unknown",
+      "bukti": "E20"
+    },
+    {
+      "id": "K10",
+      "awal": "arjum_proxy.php memiliki ep history, financial, seasonal, broker_summary, broker_accum",
+      "temuan": "Konsisten dengan endpoint Arjum nyata untuk history/seasonal/broker-summary/broker-accumulation. 'financial' TIDAK ada di 8 endpoint publik Arjum.",
+      "confidence": "observed_partial",
+      "bukti": "E24"
+    },
+    {
+      "id": "K11",
+      "awal": "fin_data.json: metadata basis standalone dan unit 1e6",
+      "temuan": "Basis standalone terkonfirmasi. Unit 1e6 TIDAK dapat dikonfirmasi: array 'p' posisional tanpa legenda, panjang kolom berbeda per template (umum/bank/keuangan)",
+      "confidence": "observed",
+      "bukti": "E21"
+    }
+  ],
+
+  "kontradiksi_dokumentasi_invezgo": [
+    {
+      "isu": "batas_kode_per_request_batch",
+      "sumber": {
+        "landing_data_api": { "max": 10, "elite": 25 },
+        "openapi_json": { "max": 10, "elite": 25 },
+        "docs_api_usage_batch": { "max": 3, "elite": 10 }
+      },
+      "kutipan_docs": "Role MAX hanya diperbolehkan maksimal 3 kode per request batch. Upgrade ke ELITE untuk unlock hingga 10 kode.",
+      "dampak": "Mengubah estimasi kuota polling hingga 2,5x",
+      "status": "harus_dikonfirmasi_sebelum_memilih_paket",
+      "confidence": "observed",
+      "bukti": "E2, E7, E8"
+    },
+    {
+      "isu": "sla_uptime",
+      "klaim_landing": "99.9% Uptime SLA Guarantee",
+      "terukur_status_page": { "api": 99.702, "main": 99.627, "mcp": 99.815, "stock_data_companion": 98.049, "jendela": "2026-06-23 s/d 2026-09-20" },
+      "terms": "Platform dapat mengalami downtime; Invezgo tidak bertanggung jawab. Tidak ada dokumen SLA dengan remedy.",
+      "confidence": "observed",
+      "bukti": "E2, E18, E4"
+    },
+    {
+      "isu": "adjusted_price",
+      "klaim_landing": "Data harga ter-adjust corporate action",
+      "temuan_openapi": "Kata 'adjust' muncul 0 kali dalam 283.808 karakter spesifikasi",
+      "status": "celah_kritis_harus_dikonfirmasi",
+      "confidence": "observed",
+      "bukti": "E2, E7"
+    }
+  ],
+
+  "fakta_baru_penting": [
+    { "fakta": "Tidak ada WebSocket; semua endpoint REST. WebSocket disebut 'dalam roadmap'.", "confidence": "documented", "bukti": "E2" },
+    { "fakta": "Endpoint /screener/screen dibatasi 3 request per 15 menit (maks 288/hari untuk seluruh aplikasi)", "confidence": "documented", "bukti": "E10" },
+    { "fakta": "Kuota hanya dipotong pada respons HTTP 2xx; 401/403/404/429/5xx tidak memotong kuota", "confidence": "documented", "bukti": "E9" },
+    { "fakta": "Batch hanya untuk 3 endpoint (order-book, intraday-data, intraday-index) dan hanya paket MAX & ELITE. Tidak tersedia untuk chart/OHLCV, broker summary, fundamental.", "confidence": "documented", "bukti": "E8" },
+    { "fakta": "Kuota MCP dan REST berbagi satu pool yang sama", "confidence": "documented", "bukti": "E12" },
+    { "fakta": "/analysis/list/stock secara eksplisit tidak menyertakan emiten delisting -> survivorship bias, tidak ada riwayat delisting", "confidence": "documented", "bukti": "E7" },
+    { "fakta": "Provenance data tidak pernah dinyatakan di halaman manapun; tidak ada pernyataan lisensi BEI/KSEI", "confidence": "observed", "bukti": "E5, E16, E17" },
+    { "fakta": "Halaman Kredibilitas mengklaim kolaborasi dengan BlackRock, Fidelity, SSGA, Bank of China, Julius Bar, Schroders tanpa penjelasan bentuk kolaborasi; tidak ada konfirmasi independen", "confidence": "marketing_claim", "bukti": "E16" },
+    { "fakta": "SDK npm @invezgo/sdk nyata dan terpelihara: v1.3.2, rilis pertama 2025-11-01, terakhir 2026-07-25, MIT", "confidence": "observed", "bukti": "E14" },
+    { "fakta": "MCP server nyata di https://mcp.invezgo.com/mcp dengan OAuth 2.1 / Bearer / query param", "confidence": "documented", "bukti": "E12" }
+  ],
+
+  "matriks_fitur_sumber": [
+    { "kebutuhan": "Daftar emiten", "invezgo": "/analysis/list/stock", "arjum": "/api/search", "idx": "GetStockSummary (963 baris/hari)", "yahoo": null, "tradingview": null, "catatan": "Invezgo tanpa emiten delisting" },
+    { "kebutuhan": "OHLCV harian EOD", "invezgo": "/analysis/chart/stock/{code} per emiten", "arjum": "/api/history/{code}", "idx": "1 request = seluruh pasar", "yahoo": "v8/finance/chart", "tradingview": "widget saja", "catatan": "IDX paling efisien tapi hanya via browser" },
+    { "kebutuhan": "Backfill histori", "invezgo": "2 th reguler / 2010 Enterprise", "arjum": "unknown", "idx": "per tanggal, manual", "yahoo": "panjang tapi tidak stabil", "tradingview": null, "catatan": "Tidak ada yang memberi >2 th tanpa Enterprise" },
+    { "kebutuhan": "Harga ter-adjust corporate action", "invezgo": "diklaim, tidak terdokumentasi", "arjum": "unknown", "idx": "tidak", "yahoo": "ada (adjclose)", "tradingview": null, "catatan": "CELAH KRITIS" },
+    { "kebutuhan": "Corporate actions", "invezgo": "/analysis/calendar (11 tipe)", "arjum": "unknown", "idx": "manual via situs", "yahoo": "terbatas", "tradingview": null, "catatan": "payload Invezgo tidak bertipe" },
+    { "kebutuhan": "Fundamental kuartalan", "invezgo": "/analysis/financial-statement/{code}", "arjum": "tidak ada di 8 endpoint publik", "idx": "XBRL/XLSX manual", "yahoo": "rasio saja", "tradingview": null, "catatan": "standalone vs YTD unknown di Invezgo" },
+    { "kebutuhan": "Rasio & valuasi", "invezgo": "/analysis/keystat/{code}", "arjum": "/api/analysis/{code}", "idx": "DER via XLSX IDX Screener", "yahoo": "PER/PBV/ROE", "tradingview": null, "catatan": null },
+    { "kebutuhan": "Broker summary", "invezgo": "/analysis/summary/stock/{code} RG/NG/TN terpisah, EOD 18:00 WIB", "arjum": "/api/broker-summary/{code}", "idx": "tidak publik", "yahoo": null, "tradingview": null, "catatan": "1 request per emiten x pasar x filter investor" },
+    { "kebutuhan": "Foreign flow", "invezgo": "/analysis/top/foreign (EOD >18:00)", "arjum": "netflow", "idx": "ForeignBuy/ForeignSell per emiten per hari", "yahoo": null, "tradingview": null, "catatan": "IDX memberi gross harian gratis" },
+    { "kebutuhan": "Kepemilikan / KSEI", "invezgo": "/analysis/shareholder/ksei/{code}, update tgl 02 tiap bulan", "arjum": "unknown", "idx": "KSEI terpisah", "yahoo": null, "tradingview": null, "catatan": null },
+    { "kebutuhan": "Intraday / order book", "invezgo": "/analysis/intraday*, /order-book, /queue", "arjum": "hanya Web UI bukan REST", "idx": "tidak", "yahoo": "1m terbatas", "tradingview": "widget", "catatan": "Hanya Invezgo yang punya via API" },
+    { "kebutuhan": "Running trade", "invezgo": "/analysis/running-trade/{code}", "arjum": "halaman /running-trade bukan endpoint publik", "idx": "tidak", "yahoo": null, "tradingview": null, "catatan": null },
+    { "kebutuhan": "Seasonality", "invezgo": "/analysis/price-seasonality/{code}", "arjum": "/api/seasonal/{code}", "idx": null, "yahoo": null, "tradingview": null, "catatan": null },
+    { "kebutuhan": "Backtesting", "invezgo": "tidak ada endpoint, bangun dari OHLCV", "arjum": "win-rate historis di screener", "idx": null, "yahoo": null, "tradingview": null, "catatan": "Terhalang harga tak ter-adjust + tak ada delisting" }
+  ],
+
+  "matriks_endpoint_invezgo": [
+    {
+      "path": "/analysis/list/stock", "method": "GET", "params_wajib": [],
+      "respons_contoh": ["code", "name", "sector", "logo"],
+      "histori": null, "update": "Setiap ada perubahan data perusahaan atau IPO baru",
+      "kekurangan": ["tidak ada listed_shares", "tidak ada free_float", "tidak ada status suspensi", "tidak ada tanggal listing", "emiten delisting tidak disertakan"],
+      "confidence": "observed"
+    },
+    {
+      "path": "/analysis/chart/stock/{code}", "method": "GET", "params_wajib": ["code", "from", "to"],
+      "respons_contoh": ["date", "open", "high", "low", "close", "volume"],
+      "histori": "2 tahun reguler / 2010-01-01 Enterprise", "update": "Realtime",
+      "kekurangan": ["tidak ada value/turnover", "tidak ada frequency", "tidak ada flag adjusted", "batas baris per request tidak diketahui", "konvensi tanggal T17:00:00Z ambigu"],
+      "confidence": "observed"
+    },
+    {
+      "path": "/analysis/chart/multi-time/{code}", "method": "GET", "params_wajib": ["code", "from", "to", "timeframe"],
+      "timeframe_enum": ["1", "5", "15", "30", "60", "D", "W", "M"],
+      "limitasi_timeframe": { "1m": "3 bulan", "5m": "6 bulan", "15m": "1 tahun", "30m": "2 tahun", "60m": "2 tahun", "D": "2 tahun", "W": "2 tahun", "M": "2 tahun" },
+      "kekurangan": ["sama seperti chart/stock"],
+      "confidence": "observed"
+    },
+    {
+      "path": "/analysis/intraday-data/{code}", "method": "GET", "params_wajib": ["code"],
+      "respons_contoh": ["open", "high", "low", "close", "avg", "volume", "freq", "value", "prev", "bid_price", "bid_lot", "bid_freq", "offer_price", "offer_lot", "offer_freq", "iep", "iev"],
+      "update": "Realtime tanpa date, historis dengan date",
+      "kekurangan": ["satuan bid_lot/offer_lot ambigu (dinamai lot tapi kemungkinan lembar)"],
+      "confidence": "observed"
+    },
+    {
+      "path": "/analysis/summary/stock/{code}", "method": "GET",
+      "params_wajib": ["code", "from", "to", "investor", "market"],
+      "investor_enum": ["all", "f", "d"], "market_enum": ["RG", "NG", "TN"],
+      "respons_contoh": ["code", "buy_freq", "buy_volume", "buy_value", "sell_freq", "sell_volume", "sell_value"],
+      "histori": "2 tahun reguler / 2016-01-01 Enterprise", "update": "EOD setiap hari jam 18:00 WIB",
+      "kekurangan": ["nilai dikembalikan sebagai string", "tidak ada opsi gabungan lintas pasar - RG+NG+TN = 3 request", "tidak ada broker summary intraday"],
+      "confidence": "observed"
+    },
+    {
+      "path": "/analysis/financial-statement/{code}", "method": "GET",
+      "params_wajib": ["code", "statement", "type"], "params_opsional": ["limit"],
+      "statement_enum": ["BS", "IS", "CF"], "type_enum": ["FY", "Q", "Q1", "Q2", "Q3", "Q4"],
+      "respons_struktur": "rows[].{id, name, level, values[].{col, year, amount, period}} hierarkis",
+      "histori": "2 tahun reguler / 2020-01-01 Enterprise", "update": "Real-time sesuai laporan emiten",
+      "kekurangan": ["tidak ada flag standalone vs YTD kumulatif", "tidak ada konsolidasi vs entitas induk", "tidak ada restatement", "tidak ada tanggal publikasi", "tidak ada mata uang", "tidak ada satuan"],
+      "confidence": "observed"
+    },
+    {
+      "path": "/analysis/calendar", "method": "GET",
+      "params_opsional": ["code", "type", "page"],
+      "type_enum": ["IPO", "PUBLIC_EXPOSE", "REVERSE", "RIGHT", "RUPS_RESULT", "RUPS_SCHEDULE", "SPLIT", "WARRANT", "BONUS", "CONVERTION", "DIVIDEND"],
+      "respons_struktur": "{totalPage, page, nextPage, data[].{code, type, payload}}",
+      "kekurangan": ["payload tidak bertipe dan berbeda per type", "parsing rasio split/dividen harus ad-hoc", "kedalaman histori tidak diketahui"],
+      "confidence": "observed"
+    },
+    {
+      "path": "/analysis/shareholder/ksei/{code}", "method": "GET", "params_wajib": ["code"],
+      "histori": "2 tahun reguler / 2009-03-01 Enterprise", "update": "Tanggal 02 setiap bulan",
+      "kekurangan": ["tidak ada pembedaan tanggal efektif laporan vs tanggal masuk sistem"],
+      "confidence": "observed"
+    },
+    {
+      "path": "/analysis/inventory-chart/stock/{code}", "method": "GET",
+      "histori": "2 tahun reguler / 2016-01-01 Enterprise", "update": "EOD setiap hari jam 18:00 WIB",
+      "kekurangan": ["definisi 'inventory' tidak pernah dijelaskan"],
+      "inferensi": "Karena data awal 2016 bertepatan dengan era broker summary, kemungkinan besar ini akumulasi transaksi dalam rentang, bukan kepemilikan aktual",
+      "confidence": "observed_plus_inference"
+    },
+    {
+      "path": "/analysis/top/foreign", "method": "GET",
+      "histori": "2 tahun reguler / 2010-01-01 Enterprise", "update": "EOD setiap hari setelah jam 18:00 WIB",
+      "kekurangan": ["hanya 'top' bukan seluruh emiten", "definisi gross/net per pasar tidak dijelaskan"],
+      "confidence": "observed"
+    },
+    {
+      "path": "/screener/screen", "method": "POST",
+      "kekurangan": ["body tidak diketahui", "DIBATASI 3 request per 15 menit - tidak dapat melayani screening pengguna"],
+      "confidence": "documented"
+    },
+    {
+      "path": "/batch/{order-book|intraday-data|intraday-index}/{code}", "method": "GET",
+      "format_code": "dipisah pipe | atau koma ,",
+      "params_opsional": ["market (RG/NG/TN, default RG)", "date", "time"],
+      "kekurangan": ["batas kode kontradiktif antar dokumentasi", "hanya MAX & ELITE"],
+      "confidence": "documented"
+    },
+    {
+      "path": "/usage/api", "method": "GET",
+      "kegunaan": "guard rail kuota ingestion: pemakaian, sisa, waktu reset",
+      "confidence": "documented"
+    }
+  ],
+
+  "celah_semantik_kritis": [
+    { "id": "S1", "isu": "Adjusted vs unadjusted", "temuan": "Kata 'adjust' 0 kali di OpenAPI; landing mengklaim ter-adjust", "asumsi_aman": "anggap unadjusted, rencanakan penyesuaian sendiri dari /analysis/calendar", "confidence": "observed" },
+    { "id": "S2", "isu": "Satuan volume", "bukti": "value 570441405000 / volume 66044100 = 8637 = avg price", "inferensi": "volume dalam lembar, value dalam IDR; tapi bid_lot 2177700 jika benar lot = Rp1,9 triliun best bid (tidak masuk akal) -> kemungkinan bid_lot juga lembar", "status": "penamaan field tidak konsisten dengan satuan, wajib dikonfirmasi", "confidence": "inference" },
+    { "id": "S3", "isu": "Konvensi tanggal", "bukti": "date 2024-09-08T17:00:00.000Z; 17:00 UTC = 00:00 WIB hari berikutnya", "inferensi": "bar kemungkinan mewakili hari bursa 2024-09-09", "risiko": "salah baca 1 hari merusak seluruh indikator", "confidence": "inference" },
+    { "id": "S4", "isu": "Mata uang", "temuan": "tidak pernah dinyatakan; emiten pelapor USD tidak jelas", "confidence": "unknown" },
+    { "id": "S5", "isu": "Fundamental standalone vs kumulatif YTD", "temuan": "Q1 dan Q2 ditampilkan sebagai kolom terpisah tanpa keterangan basis", "dampak": "mengubah semua rasio TTM", "uji_empiris": "cek apakah Q1+Q2+Q3+Q4 = FY", "confidence": "unknown" },
+    { "id": "S6", "isu": "IPO, suspensi, delisting, perubahan simbol", "temuan": "tidak ada endpoint riwayat; /analysis/notation mungkin menutup sebagian tapi skema tidak diketahui", "confidence": "unknown" },
+    { "id": "S7", "isu": "Broker summary intraday", "temuan": "endpoint dinyatakan EOD 18:00 WIB; angka hari berjalan tidak tersedia via API", "confidence": "documented" },
+    { "id": "S8", "isu": "Pagination", "temuan": "hanya /analysis/calendar yang jelas berpaginasi; batas baris chart/stock untuk rentang 2 tahun tidak diketahui", "dampak": "menentukan 1 vs N request per emiten saat backfill", "confidence": "unknown" },
+    { "id": "S9", "isu": "Concurrency & IP restriction", "temuan": "tidak disebut di manapun", "confidence": "unknown" }
+  ],
+
+  "paket_dan_biaya": {
+    "mata_uang": "IDR",
+    "pajak": "tidak disebutkan di halaman manapun",
+    "tanggal_harga": "2026-09-20",
+    "catatan_tagihan": "Harga yang ditampilkan adalah per bulan. Tahunan = 10x bulanan, dipasarkan 'Gratis 1 Bulan'.",
+    "paket_api": [
+      { "nama": "Advance", "harga_promo_bulan": 499900, "harga_normal_bulan": 999000, "harga_promo_tahun": 4999000, "rate_limit_per_menit": 250, "kuota_per_bulan": 30000, "batch": false, "biaya_per_request": 16.7 },
+      { "nama": "Prime", "harga_promo_bulan": 999000, "harga_normal_bulan": 1999000, "harga_promo_tahun": 9990000, "rate_limit_per_menit": 500, "kuota_per_bulan": 65000, "batch": false, "biaya_per_request": 15.4 },
+      { "nama": "Max", "harga_promo_bulan": 1999900, "harga_normal_bulan": 3999000, "harga_promo_tahun": 19999000, "rate_limit_per_menit": 1000, "kuota_per_bulan": 145000, "batch": "3 atau 10 (kontradiktif)", "biaya_per_request": 13.8 },
+      { "nama": "Elite", "harga_promo_bulan": 4000000, "harga_normal_bulan": 8000000, "harga_promo_tahun": 40000000, "rate_limit_per_menit": 2000, "kuota_per_bulan": 320000, "batch": "10 atau 25 (kontradiktif)", "biaya_per_request": 12.5 },
+      { "nama": "Enterprise", "harga": "tidak dipublikasikan", "kontak": "admin@invezgo.com", "manfaat_terbukti": "kedalaman histori, BUKAN hak redistribusi" }
+    ],
+    "paket_aplikasi_bukan_api": [
+      { "nama": "Trial", "harga_bulan": 0 },
+      { "nama": "Starter", "harga_bulan": 39900 },
+      { "nama": "Basic", "harga_bulan": 79900 },
+      { "nama": "Pro", "harga_bulan": 149900 },
+      { "nama": "Ultra", "harga_bulan": 299900 }
+    ],
+    "arjum": { "model": "kuota harian gratis untuk akun terdaftar, reset 00:00 WIB, dapat dinaikkan via Developer Dashboard", "angka_kuota": "tidak dipublikasikan sebelum login", "paket_berbayar": "tidak dipublikasikan" }
+  },
+
+  "asumsi_estimasi": {
+    "jumlah_emiten_nyata": 963,
+    "sumber_jumlah_emiten": "recordsTotal IDX GetStockSummary 2026-09-18",
+    "jumlah_emiten_dipakai_watchlist": 950,
+    "hari_bursa_per_bulan": 20,
+    "hari_bursa_per_tahun": 240,
+    "durasi_sesi_menit_per_hari": 300,
+    "polling_5menit_per_hari": 60,
+    "catatan": [
+      "hari bursa dan durasi sesi adalah ASUMSI, bukan data resmi",
+      "kuota dipotong hanya pada 2xx; retry gagal tidak memotong kuota",
+      "batch tidak berlaku untuk chart/OHLCV, broker summary, fundamental",
+      "tidak ada endpoint 'seluruh emiten sekaligus' untuk OHLCV harian -> 1 request per emiten"
+    ]
+  },
+
+  "estimasi_konsumsi": [
+    { "id": 1, "skenario": "EOD OHLCV 950 emiten harian", "rumus": "950 x 20", "request_per_bulan": 19000, "paket_minimum": "Advance" },
+    { "id": 2, "skenario": "Backfill histori 2 tahun, 1 request rentang penuh", "rumus": "950 x 1", "request_sekali": 950, "paket_minimum": null },
+    { "id": "2b", "skenario": "Backfill bila ada batas baris, per tahun", "rumus": "950 x 2", "request_sekali": 1900, "paket_minimum": null },
+    { "id": 3, "skenario": "Fundamental berkala (BS+IS+CF+keystat)", "rumus": "950 x 4", "request_per_siklus": 3800, "paket_minimum": null },
+    { "id": 4, "skenario": "Watchlist 50 emiten per 5 menit, tanpa batch", "rumus": "50 x 60 x 20", "request_per_bulan": 60000, "paket_minimum": "Prime (nyaris habis)" },
+    { "id": "4b", "skenario": "Watchlist 50 emiten per 5 menit, batch 10 (Elite)", "rumus": "5 x 60 x 20", "request_per_bulan": 6000, "paket_minimum": "Elite" },
+    { "id": "4c", "skenario": "Watchlist 50 emiten per 5 menit, batch 3 (Max versi docs)", "rumus": "17 x 60 x 20", "request_per_bulan": 20400, "paket_minimum": "Max" },
+    { "id": 5, "skenario": "Seluruh 950 emiten per 5 menit, tanpa batch", "rumus": "950 x 60 x 20", "request_per_bulan": 1140000, "paket_minimum": "TIDAK ADA PAKET YANG CUKUP (3,6x Elite)" },
+    { "id": "5b", "skenario": "Seluruh 950 emiten per 5 menit, batch 10 (Elite versi docs)", "rumus": "95 x 60 x 20", "request_per_bulan": 114000, "paket_minimum": "Elite" },
+    { "id": "5c", "skenario": "Seluruh 950 emiten per 5 menit, batch 25 (Elite versi landing/OpenAPI)", "rumus": "38 x 60 x 20", "request_per_bulan": 45600, "paket_minimum": "Elite" },
+    { "id": "5d", "skenario": "Seluruh 950 emiten per 5 menit, batch 3 (Max versi docs)", "rumus": "317 x 60 x 20", "request_per_bulan": 380400, "paket_minimum": "MELEBIHI MAX 2,6x" },
+    { "id": 6, "skenario": "Broker summary harian 950 emiten, RG saja, investor=all", "rumus": "950 x 20", "request_per_bulan": 19000, "paket_minimum": null },
+    { "id": "6b", "skenario": "Broker summary harian, RG+NG+TN", "rumus": "950 x 3 x 20", "request_per_bulan": 57000, "paket_minimum": null },
+    { "id": "6c", "skenario": "Broker summary harian, 3 pasar x 3 filter investor", "rumus": "950 x 9 x 20", "request_per_bulan": 171000, "paket_minimum": "Elite" },
+    { "id": "polling_5_detik", "skenario": "Klaim 'update every 5s' dikonsumsi penuh untuk 950 emiten", "rumus": "950 x 720 x 20", "request_per_bulan": 13680000, "paket_minimum": "43x kuota Elite - secara praktis tidak dapat dikonsumsi" }
+  ],
+
+  "kombinasi_realistis": [
+    { "nama": "Screener harian tanpa intraday", "komponen": [1, "3 bulanan", "6 RG saja"], "total_request_per_bulan": 41800, "paket": "Prime", "biaya_bulan": 999000 },
+    { "nama": "Screener harian + pemantauan intraday seluruh pasar", "komponen": [1, "3 bulanan", "6 RG saja", "5b"], "total_request_per_bulan": 155800, "paket": "Elite", "biaya_bulan": 4000000, "syarat": "bergantung pada batch 10 di Elite benar-benar berlaku" }
+  ],
+
+  "hak_penggunaan": {
+    "invezgo": {
+      "diizinkan_eksplisit": [
+        "Penggunaan API oleh pemegang akun dengan langganan aktif dan API key valid",
+        "Penyimpanan API key di vault/secret manager (mengindikasikan pemakaian backend diharapkan)",
+        "/analysis/list/stock disebut berguna 'untuk menampilkan daftar saham di website' - hanya daftar kode emiten, bukan data pasar"
+      ],
+      "dilarang_eksplisit": [
+        "Mendistribusikan ulang, memperjualbelikan, atau mengomersialkan kembali data maupun akses API (sanksi: suspensi permanen tanpa refund + kemungkinan tindakan hukum)",
+        "Konsumsi konten di luar personal non-commercial use",
+        "Berbagi langganan antar-orang",
+        "Menyalin/membagikan/menjual konten tanpa izin kecuali potongan kecil non-komersial"
+      ],
+      "belum_jelas": [
+        "Menyimpan hasil API ke database sendiri (cache/warehouse) - tidak diatur",
+        "Menampilkan data turunan (indikator, skor, ranking) ke pengguna pihak ketiga - zona abu-abu; JANGAN berasumsi transformasi menghapus batasan",
+        "Ekspor CSV/Excel oleh pengguna akhir",
+        "Retensi data setelah langganan berhenti - tidak ada klausul sama sekali",
+        "Kewajiban atribusi - tidak ada",
+        "Apakah Enterprise mengizinkan website publik - TIDAK ADA BUKTI; yang terbukti hanya kedalaman histori",
+        "Status lisensi terhadap BEI/KSEI - tidak dinyatakan"
+      ],
+      "sla": "Landing mengklaim 99,9%. Terms menyatakan platform bisa down dan Invezgo tidak bertanggung jawab. Tidak ada dokumen SLA dengan remedy.",
+      "refund": "Hanya bila terbukti kesalahan Invezgo; selain itu tidak ada refund setelah pembelian"
+    },
+    "arjum_idx_edge": {
+      "tanggal_terms": "2026-07-30",
+      "diizinkan_eksplisit": ["Pemakaian REST API dengan kuota harian oleh akun terdaftar"],
+      "dilarang_eksplisit": ["Percobaan peretasan", "Scraping berlebihan yang mengganggu server", "Eksploitasi celah kuota harian"],
+      "belum_jelas": ["redistribusi", "penyimpanan", "website publik gratis/berbayar", "atribusi", "retensi", "sumber data upstream", "SLA"],
+      "risiko": "Terms dapat diubah sewaktu-waktu tanpa pemberitahuan"
+    },
+    "kompetitor_ihsgscreener": {
+      "aksesibilitas": "fin_data.json dan running_trade.json dapat diambil tanpa login",
+      "izin": "TIDAK ADA lisensi, terms, atau atribusi. Aksesibilitas bukan izin.",
+      "boleh": "fixture uji lokal sekali ambil untuk memvalidasi parser",
+      "tidak_boleh": ["endpoint ingestion rutin", "penayangan ulang"]
+    },
+    "tradingview": {
+      "boleh": "widget Advanced Chart display-only dengan atribusi",
+      "dilarang": ["penggunaan non-display: automated trading, price referencing, algorithmic decision-making", "sublicensing/distribusi market data"],
+      "implikasi": "tidak boleh menjadi sumber angka untuk indikator, screener, sinyal, atau backtest"
+    },
+    "yahoo": {
+      "status_endpoint": "query1.finance.yahoo.com bukan API resmi ber-SLA; endpoint internal situs; sering diblokir",
+      "dilarang": ["menjual/menyewakan/mensublisensikan API atau memperoleh pendapatan dari penyediaannya", "produk yang bersaing dengan layanan Yahoo"],
+      "retensi": "wajib menghapus data Yahoo dalam 24 jam kecuali dokumentasi API mengizinkan penyimpanan permanen",
+      "implikasi": "bertabrakan langsung dengan kebutuhan menyimpan histori di PostgreSQL"
+    }
+  },
+
+  "peta_integrasi_kompetitor": {
+    "catatan_metodologi": "index.html kompetitor dilindungi login (auth_check.js -> login.html). File frontend yang disebut di brief TIDAK dilampirkan ke sesi ini dan tidak diklaim terbaca. Peta dibangun dari halaman publik, file JSON publik, dan developer.html yang ternyata dapat diakses tanpa login.",
+    "baris": [
+      { "fitur": "OHLCV & data pasar harian", "jalur": "Panel admin 'Data IDX Real-Time Multi Hari', kotak paste H-6..H-0", "sumber_terbukti": "idx.co.id /primary/TradingSummary/GetStockSummary", "bukti": "link idxLink1..7 ter-hardcode di developer.html dengan tanggal 2026-09-10..2026-09-16", "kepastian": "tinggi", "sifat": "input_manual_admin" },
+      { "fitur": "Harga terkini dataset publik", "jalur": "import_idx.php?action=enrich&price_only=1", "sumber_terbukti": "Yahoo Finance", "bukti": "tombol 'Update Harga (Yahoo)' + data.json meta enrich '956/958 saham di-enrich dari Yahoo Finance'", "kepastian": "tinggi", "sifat": "otomatis_dipicu_manual" },
+      { "fitur": "IHSG di landing", "jalur": "yahoo_quote.php?symbols=^JKSE", "sumber_terbukti": "Yahoo Finance (proxy server-side)", "bukti": "teramati di network log", "kepastian": "tinggi", "sifat": "otomatis" },
+      { "fitur": "Dataset screener utama", "jalur": "data.json (cache-bust ?t=)", "sumber_terbukti": "deklarasi sendiri: 'IDX Screener (info+DER) + Yahoo Finance (fundamental+harga)', total 958", "bukti": "Last-Modified 2026-09-18 10:01 UTC", "kepastian": "tinggi", "sifat": "snapshot_json" },
+      { "fitur": "DER & info emiten", "jalur": "Upload XLSX IDX Screener di panel admin", "sumber_terbukti": "IDX (file XLSX)", "bukti": "'Upload file XLSX dari IDX Screener' + mode 'Update DER Saja (Aman)'", "kepastian": "tinggi", "sifat": "input_manual_admin" },
+      { "fitur": "Fundamental kuartalan", "jalur": "bulk_fetch.php -> fin_data.json", "sumber_terbukti": "Arjum (stock.arjum.com / IDX Edge PRO)", "bukti": "fin_data.json diawali {\"source\":\"arjum\",\"basis\":\"standalone\"}; teks panel 'Bulk Fetch laporan keuangan Arjum, per kuartal berdiri sendiri'", "kepastian": "tinggi_untuk_sumber_sedang_untuk_endpoint", "sifat": "otomatis_snapshot_mingguan" },
+      { "fitur": "Broker summary / akumulasi / seasonality", "jalur": "arjum_proxy.php?ep=... (disebut di brief, tidak dapat dibaca)", "sumber_terbukti": "Arjum: /api/broker-summary, /api/broker-accumulation, /api/seasonal, /api/history semuanya nyata dan dipublikasikan", "bukti": "FAQ stock.arjum.com", "kepastian": "sedang_tinggi", "sifat": "otomatis" },
+      { "fitur": "Running trade", "jalur": "running_trade.json", "sumber_terbukti": "UNKNOWN - tidak ada penanda sumber di dalam file", "bukti": "Last-Modified 2026-09-18 08:59 UTC (15:59 WIB); field t,c,a,p,l,v,tn,ts; tn berformat nomor transaksi IDX", "kepastian": "tinggi_bahwa_terisi_saat_bursa_buka", "sifat": "otomatis_worker" },
+      { "fitur": "Whale Alert", "jalur": "Panel admin, paste Data Buy & Sell", "sumber_terbukti": "RTI / IPOT", "bukti": "teks panel admin", "kepastian": "tinggi", "sifat": "input_manual_admin" },
+      { "fitur": "BPJS Day Trade", "jalur": "Panel admin, paste Data Buy + Market", "sumber_terbukti": "RTI / IPOT", "bukti": "teks panel admin", "kepastian": "tinggi", "sifat": "input_manual_admin" },
+      { "fitur": "Manajemen delisting", "jalur": "Daftar blokir manual di panel", "sumber_terbukti": "Admin", "bukti": "teks panel admin", "kepastian": "tinggi", "sifat": "input_manual_admin" },
+      { "fitur": "ARA/ARB", "jalur": "ara_data.json, ara_history.json (?v=YYYYMMDDHH)", "sumber_terbukti": "UNKNOWN", "bukti": "teramati di network log", "kepastian": "sedang", "sifat": "snapshot_json" },
+      { "fitur": "Invezgo sebagai sumber", "jalur": null, "sumber_terbukti": "TIDAK DITEMUKAN - kata 'invezgo' 0 kemunculan di developer.html dan halaman publik", "bukti": "pencarian teks pada DOM", "kepastian": "unknown", "sifat": "klaim_invezgo_proxy_dan_finBuka_src1_tidak_dapat_diverifikasi" },
+      { "fitur": "TradingView / DeepSeek", "jalur": null, "sumber_terbukti": "tidak ditemukan di halaman publik yang diperiksa", "bukti": null, "kepastian": "unknown", "sifat": "kemungkinan_hanya_di_area_berlogin" }
+    ],
+    "kesimpulan": [
+      "Kompetitor TIDAK punya ingestion IDX otomatis. Tulang punggung data pasar hariannya adalah manusia membuka link IDX di browser dan menempel JSON. Hambatan Cloudflare yang Anda temui juga belum dipecahkan kompetitor.",
+      "Satu-satunya bagian yang benar-benar otomatis dan bernilai adalah Arjum (fundamental, broker summary, seasonality) dan Yahoo (harga). Keduanya tersedia untuk Anda juga.",
+      "Kualitas operasionalnya rendah: fin_data.json sudah 7 hari basi, hanya ~611 dari 963 emiten, dan panel admin memuat peringatan bahwa import salah pernah merusak PER sampai 'estimasi upside meledak sampai jutaan persen'."
+    ],
+    "catatan_etis": "Panel developer.html kompetitor termasuk manajemen pengguna dan langganan dapat diakses tanpa autentikasi. Hanya dibaca; tidak ada tombol ditekan, bulk_fetch.php tidak dibuka, tidak ada identitas direproduksi. Disarankan tim juga tidak berinteraksi dengannya.",
+    "kelayakan_sebagai_sumber": {
+      "fixture_uji_lokal": { "verdict": "layak_terbatas", "catatan": "Ambil sekali, simpan lokal, jangan tayangkan. Kolom p posisional tanpa legenda -> rekayasa balik arti kolom rapuh." },
+      "endpoint_ingestion_rutin": { "verdict": "tidak_layak", "catatan": "Tidak ada izin, SLA, atau kontrak; sudah terbukti basi 7 hari; polling rutin tanpa izin adalah masalah hukum sekaligus etika." }
+    }
+  },
+
+  "klaim_realtime": {
+    "lapis_waktu": [
+      { "lapis": "waktu kejadian transaksi di bursa", "diketahui": "tidak pernah dinyatakan; tidak ada field latensi sumber", "confidence": "unknown" },
+      { "lapis": "waktu penyedia memproses", "diketahui": "diklaim 'Update every 5s' tanpa timestamp pembuktian. Untuk EOD dinyatakan jelas 18:00 WIB (broker summary, foreign flow, inventory, seasonality)", "confidence": "marketing_claim_plus_documented" },
+      { "lapis": "waktu respons API", "diketahui": "diklaim <50ms dan <35ms avg; halaman demo sendiri menampilkan 124ms", "confidence": "marketing_claim" },
+      { "lapis": "interval polling aplikasi", "diketahui": "pilihan kita; penentu biaya", "confidence": "n/a" },
+      { "lapis": "waktu tampil di layar", "diketahui": "tergantung arsitektur kita", "confidence": "n/a" }
+    ],
+    "pengukuran_delay": "BELUM DAPAT DILAKUKAN dan tidak dilakukan: bursa tutup (Minggu), tidak ada API key, tidak ada timestamp sumber di payload contoh",
+    "peringatan": "Jangan menyamakan 'update 5 detik' atau 'latensi 50ms' dengan 'data bursa tanpa delay'. Keduanya pernyataan tentang infrastruktur penyedia, bukan jarak ke bursa.",
+    "konsekuensi_tanpa_websocket": "Satu-satunya cara memanfaatkan pembaruan 5 detik adalah polling 5 detik = 13,68 juta request/bulan untuk 950 emiten = 43x kuota Elite. Klaim 5 detik secara praktis tidak dapat dikonsumsi pada skala seluruh pasar."
+  },
+
+  "rancangan_sumber": {
+    "lapis_A_prototipe_privat_gratis": [
+      { "kebutuhan": "OHLCV harian + foreign flow + notasi + listed shares", "sumber": "IDX GetStockSummary", "sifat": "1 request/hari dari sesi browser manusia, 963 emiten sekaligus", "keterbatasan": "BUKAN otomatis" },
+      { "kebutuhan": "Fundamental, broker summary, seasonality", "sumber": "Arjum/IDX Edge API key gratis", "sifat": "otomatis" },
+      { "kebutuhan": "Fixture uji", "sumber": "1 salinan fin_data.json + running_trade.json", "sifat": "sekali ambil, lokal saja" },
+      { "kebutuhan": "Chart untuk mata manusia", "sumber": "widget TradingView dengan atribusi", "sifat": "display-only, bukan sumber angka" }
+    ],
+    "lapis_B_prototipe_privat_berbayar": [
+      "Invezgo Advance atau Prime sebagai sumber tunggal OHLCV + fundamental + broker summary",
+      "/usage/api sebagai guard rail kuota",
+      "Simpan mentah di PostgreSQL apa adanya + kolom source, fetched_at, as_of terpisah dari report_date",
+      "Tangani penyesuaian corporate action sendiri dari /analysis/calendar sampai status adjusted ditegaskan"
+    ],
+    "lapis_C_produksi_website_publik": {
+      "prasyarat_salah_satu": [
+        "Konfirmasi tertulis dari Invezgo bahwa paket tertentu mengizinkan penayangan data dan data turunan ke pengguna pihak ketiga",
+        "Konfirmasi tertulis serupa dari Arjum/IDX Edge beserta pengungkapan sumber upstream",
+        "Lisensi Layanan Data BEI langsung (IDX Equity EoD / Professional / Basic)"
+      ],
+      "aturan": "Tanpa salah satu dari ketiganya, website publik tidak boleh diluncurkan dengan data dari sumber-sumber ini."
+    },
+    "prinsip_desain": [
+      "Abstraksikan penyedia di balik satu antarmuka internal sejak awal",
+      "Simpan raw_payload untuk setiap tarikan",
+      "Pisahkan tegas empat stempel waktu: kejadian transaksi, penyedia memproses, respons API, waktu tampil"
+    ]
+  },
+
+  "pertanyaan_untuk_vendor": {
+    "catatan": "JANGAN dikirim otomatis. Kirim sendiri.",
+    "invezgo_akses_teknis": [
+      "Berapa batas kode per request batch sebenarnya untuk MAX dan ELITE? Docs menyebut 3/10, landing dan openapi.json menyebut 10/25.",
+      "Apakah ada trial atau free tier untuk paket API? Landing menyebut 'Free Tier API key instan' tetapi halaman paket tidak menunjukkannya.",
+      "Apakah ada pembatasan IP, batas concurrency, atau pembatasan endpoint per paket selain rate limit dan kuota?",
+      "Apakah satu API key boleh dipakai dari server produksi terjadwal tanpa browser? Ada batas jumlah key per akun?"
+    ],
+    "invezgo_semantik_data": [
+      "Apakah harga pada /analysis/chart/stock sudah disesuaikan terhadap corporate action? Kata 'adjust' tidak muncul sama sekali di openapi.json.",
+      "Pada /analysis/intraday-data, apakah volume dalam lembar dan bid_lot/offer_lot dalam lot atau lembar? Contoh resmi tampak tidak konsisten.",
+      "Pada /analysis/chart/stock, date 2024-09-08T17:00:00.000Z mewakili hari bursa yang mana, 8 atau 9 September?",
+      "Pada /analysis/financial-statement dengan type=Q, apakah amount kuartal berdiri sendiri atau kumulatif YTD? Konsolidasi atau entitas induk? Mata uang dan satuan? Ada tanggal publikasi dan penanda restatement?",
+      "Apakah tersedia riwayat emiten delisting, suspensi, dan perubahan kode?",
+      "Apa definisi tepat 'inventory' pada /analysis/inventory-chart - akumulasi transaksi dalam rentang atau kepemilikan aktual?",
+      "Pada /analysis/top/foreign: net atau gross, mencakup pasar apa saja, dan apakah ada versi seluruh emiten?",
+      "Apakah broker summary intraday tersedia? Jika ya, observasi nyata atau estimasi?",
+      "Pada /analysis/shareholder/ksei, apakah respons membedakan tanggal efektif laporan dan tanggal masuk sistem?",
+      "Berapa batas jumlah baris untuk satu request /analysis/chart/stock dengan rentang 2 tahun? Ada pagination?",
+      "Apakah ada skema respons resmi untuk payload pada /analysis/calendar per tipe aksi korporasi?"
+    ],
+    "invezgo_komersial_hukum": [
+      "Bolehkah menyimpan hasil API ke database sendiri secara permanen? Berapa lama setelah langganan berakhir?",
+      "Apakah ada paket yang mengizinkan menampilkan data Anda - mentah maupun turunan - kepada pengguna pihak ketiga di website kami, gratis maupun berbayar? Paket mana dan apa batasannya?",
+      "Apakah Enterprise mengubah hak redistribusi, atau hanya menambah kedalaman histori?",
+      "Apakah pengguna akhir kami boleh mengekspor data ke CSV/Excel?",
+      "Apakah ada kewajiban atribusi, dan bagaimana bentuknya?",
+      "Apakah Invezgo vendor data berlisensi dari BEI dan/atau KSEI? Bisakah kami menerima salinan atau nomor rujukan lisensinya?",
+      "Apakah ada dokumen SLA dengan remedy? Status page menunjukkan uptime API 99,702% pada 23 Jun-20 Sep 2026 sementara landing mengklaim 99,9%.",
+      "Apa bentuk kolaborasi dengan BlackRock, Fidelity, SSGA, Bank of China, Julius Bar, dan Schroders yang disebut di halaman Kredibilitas?",
+      "Apakah harga yang ditampilkan sudah termasuk PPN?"
+    ],
+    "arjum_idx_edge": [
+      "Berapa kuota harian gratis, dan berapa batas maksimum setelah dinaikkan lewat dashboard?",
+      "Berapa kedalaman histori /api/history/{code}, dan apakah harganya ter-adjust corporate action?",
+      "Apakah ada endpoint laporan keuangan? Bila ya, apa dasarnya dan berapa cakupan emitennya?",
+      "Dari mana data broker summary Anda berasal, dan apakah Anda pemegang lisensi data BEI?",
+      "Bolehkah data Anda ditampilkan di website publik kami - gratis dan/atau berbayar? Ada kewajiban atribusi?",
+      "Apakah tersedia paket berbayar dengan SLA dan komitmen terms yang tidak berubah tanpa pemberitahuan?"
+    ]
+  },
+
+  "daftar_bukti": [
+    { "id": "E1", "url": "https://invezgo.com/id/", "observasi": "Halaman produk konsumen; fitur screener/AI/workspace; tidak menyebut API" },
+    { "id": "E2", "url": "https://invezgo.com/id/data-api-saham-indonesia", "observasi": "Tabel paket API + klaim 'Update every 5s', '<50ms', '99.9% Uptime SLA', '15+ Tahun Data Historis 2009-2026', '900+ emiten', 'Corporate Actions Adjusted'. Tabel batch: Max 10, Elite 25. Toggle Bulan/Tahun menampilkan angka identik. FAQ: tidak ada WebSocket." },
+    { "id": "E3", "url": "https://invezgo.com/pricing", "observasi": "Hanya paket aplikasi Trial-Ultra. Tidak ada paket API." },
+    { "id": "E4", "url": "https://invezgo.com/terms", "observasi": "'personal, non-commercial use only'; larangan menyalin/membagikan/menjual konten; tidak ada SLA; refund hanya bila terbukti kesalahan Invezgo" },
+    { "id": "E5", "url": "https://docs.invezgo.com/api-usage/", "observasi": "'membatasi data maksimal 2 tahun ke belakang untuk seluruh endpoint pada paket berlangganan reguler'; larangan redistribusi/komersialisasi ulang; kontak Enterprise admin@invezgo.com" },
+    { "id": "E6", "url": "https://docs.invezgo.com/api-usage/endpoint/", "observasi": "Daftar 7 kategori endpoint; menautkan ke api.invezgo.com/openapi.json. TIDAK memuat endpoint chart/OHLCV." },
+    { "id": "E7", "url": "https://api.invezgo.com/openapi.json", "observasi": "OpenAPI 3.0, 283.808 karakter, 94 path; securityScheme API key via header Authorization; 'Data Awal ... [ENTERPRISE]' per endpoint; 0 kemunculan kata 'adjust'; contoh respons per endpoint" },
+    { "id": "E8", "url": "https://docs.invezgo.com/api-usage/batch/", "observasi": "Batch hanya MAX & ELITE; tabel MAX 3 / ELITE 10; contoh curl dengan Authorization: Bearer; batch = 1 request kuota; pesan error 400 dikutip" },
+    { "id": "E9", "url": "https://docs.invezgo.com/api-usage/quota/", "observasi": "Kuota per paket; kuota hanya dipotong pada 2xx; /usage/api memberi sisa dan waktu reset" },
+    { "id": "E10", "url": "https://docs.invezgo.com/api-usage/rate-limit/", "observasi": "Rate limit per paket; screener 3 req/15 menit; header X-RateLimit-*; cooldown 5 menit" },
+    { "id": "E11", "url": "https://docs.invezgo.com/api-usage/api-key/", "observasi": "Key ditampilkan sekali; reset dengan mengetik 'RESET'; anjuran vault/secret manager" },
+    { "id": "E12", "url": "https://docs.invezgo.com/api-usage/mcp/", "observasi": "https://mcp.invezgo.com/mcp; OAuth 2.1 / Bearer / query param; kuota MCP dan REST digabung" },
+    { "id": "E13", "url": "https://docs.invezgo.com/api-usage/sdk-library/", "observasi": "SDK JS/TS, Python, Go, Rust, PHP dengan repo GitHub" },
+    { "id": "E14", "url": "https://registry.npmjs.org/@invezgo/sdk", "observasi": "v1.3.2; rilis pertama 2025-11-01; terakhir 2026-07-25; MIT" },
+    { "id": "E15", "url": "https://docs.invezgo.com/getting-started/subscription/", "observasi": "Paket Developer: Advance Rp499.900/bln atau Rp4.999.000/th; Prime, Max, Elite; batch hanya Max & Elite" },
+    { "id": "E16", "url": "https://docs.invezgo.com/getting-started/credibility/", "observasi": "Klaim kolaborasi: Blackrock, Fidelity, SSGA, Bank of China, Julius Bar, Danantara, Schroders, BPRIN UNAIR. Klien: Paper To Billion, Stock Wise, Cak Investment, Jonathan Thamrin." },
+    { "id": "E17", "url": "https://docs.invezgo.com/glossary/foreign-flow/ dan /glossary/broker-summary/", "observasi": "foreign flow = buy - sell (net); sumber upstream tidak diungkap" },
+    { "id": "E18", "url": "https://status.invezgo.com/", "observasi": "Per 2026-09-20 05:19 UTC semua online. Uptime jendela 23 Jun-20 Sep: API 99,702%, Main 99,627%, MCP 99,815%, Stock Data Companion 98,049%" },
+    { "id": "E19", "url": "https://ihsgscreener.com/", "observasi": "Memerlukan login. Network log: data.json, ara_data.json, ara_history.json, auth.php, tracker.php, yahoo_quote.php?symbols=^JKSE" },
+    { "id": "E20", "url": "https://ihsgscreener.com/developer.html", "observasi": "Dapat diakses tanpa login. Link IDX GetStockSummary H-6..H-0 ter-hardcode; upload XLSX IDX; 'Update Harga (Yahoo)'; import_idx.php?action=enrich&price_only=1; 'Bulk Fetch laporan keuangan Arjum, per kuartal berdiri sendiri'; paste RTI/IPOT; manajemen delisting manual. PHP: bulk_fetch.php, import_idx.php, auth.php, tracker.php, api_user.php, subscription_admin_api.php, mail_api.php. 0 kemunculan 'invezgo'." },
+    { "id": "E21", "url": "https://ihsgscreener.com/fin_data.json", "observasi": "Last-Modified 2026-09-13 13:03 UTC. Header {\"source\":\"arjum\",\"basis\":\"standalone\",\"updated\":\"13 Sep 2026 13:03\"}. ~611 emiten, ~6.032 baris kuartalan, tahun 2022-2026, template umum/bank/keuangan, kolom p posisional tanpa legenda." },
+    { "id": "E22", "url": "https://ihsgscreener.com/data.json", "observasi": "Last-Modified 2026-09-18 10:01 UTC. source 'IDX Screener (info+DER) + Yahoo Finance (fundamental+harga)', total 958, enriched 956." },
+    { "id": "E23", "url": "https://ihsgscreener.com/running_trade.json", "observasi": "Last-Modified 2026-09-18 08:59 UTC (15:59 WIB). 108.996 byte. Field t,c,a,p,l,v,tn,ts; v = p x l x 100 -> l dalam lot, v dalam IDR. tn berformat nomor transaksi IDX. Sumber upstream tidak tertera." },
+    { "id": "E24", "url": "https://stock.arjum.com/", "observasi": "IDX Edge PRO. 'REST API gratis', header X-API-Key, 8 endpoint: /api/screener/latest, /api/analysis/{code}, /api/broker-summary/{code}, /api/broker-accumulation/{code}, /api/history/{code}, /api/seasonal/{code}, /api/search, /api/health. Kuota harian reset 00:00 WIB. Realtime hanya di Web UI bukan REST." },
+    { "id": "E25", "url": "https://stock.arjum.com/terms", "observasi": "Terakhir diperbarui 2026-07-30. Mengatur kuota, larangan scraping berlebihan, disclaimer. Tidak ada klausul redistribusi. Dapat diubah sewaktu-waktu tanpa pemberitahuan." },
+    { "id": "E26", "url": "https://stock.arjum.com/api/health", "observasi": "{\"ok\":true,\"status\":\"healthy\"} - endpoint publik tanpa key (1 request)" },
+    { "id": "E27", "url": "https://github.com/budikuatno2-ship-it/auto-cuan/pull/539", "observasi": "PR publik pihak ketiga: klien stock.arjum.com dengan X-API-Key, mengambil broker summary, broker accumulation, insider. Bukti independen identitas Arjum." },
+    { "id": "E28", "url": "https://www.idx.co.id/primary/TradingSummary/GetStockSummary?startDate=2026-09-18&endDate=2026-09-18", "observasi": "Berhasil di browser. recordsTotal 963. 32 field per emiten: No, IDStockSummary, Date, StockCode, StockName, Remarks, Previous, OpenPrice, FirstTrade, High, Low, Close, Change, Volume, Value, Frequency, IndexIndividual, Offer, OfferVolume, Bid, BidVolume, ListedShares, TradebleShares, WeightForIndex, ForeignSell, ForeignBuy, DelistingDate, NonRegularVolume, NonRegularValue, NonRegularFrequency, persen, percentage. Parameter length=5 diabaikan." },
+    { "id": "E29", "url": "https://www.idx.co.id/id/produk/layanan-data-bei", "observasi": "Produk lisensi resmi: Market Data BEI, distribusi system to system, Real Time / Delayed / End of Day / Log Data. Varian IDX Equity EoD / Professional / Basic / Indices / Recapitulation untuk Data Vendor, Financial application developer, Fintech Startup." },
+    { "id": "E30", "url": "https://www.tradingview.com/policies/", "observasi": "Larangan penggunaan non-display (algorithmic decision-making, price referencing); kewajiban atribusi; larangan sublicensing market data" },
+    { "id": "E31", "url": "Yahoo Developer/API terms + laporan komunitas", "observasi": "Larangan menjual/mensublisensikan/memperoleh pendapatan; larangan bersaing dengan layanan Yahoo; kewajiban menghapus data dalam 24 jam kecuali diizinkan; endpoint query1 tidak resmi dan sering diblokir" },
+    { "id": "E32", "url": "uji egress kontainer investigasi ini", "observasi": "curl ke api.invezgo.com, stock.arjum.com, ihsgscreener.com, www.idx.co.id, query1.finance.yahoo.com semuanya ditolak gateway (403 CONNECT, policy denial)" }
+  ],
+
+  "keterbatasan": [
+    "Tidak ada satu pun request API yang dieksekusi dengan API key. Tidak ada paket dibeli. Semua pernyataan tentang Invezgo bersifat terdokumentasi, bukan teruji.",
+    "Akses server sama sekali tidak dapat diuji dari lingkungan ini. Egress kontainer memblokir seluruh host relevan pada level kebijakan gateway. Keberhasilan browser BUKAN bukti backend Anda dapat menjangkau host yang sama.",
+    "File kompetitor yang disebut di brief tidak dilampirkan: arjum_proxy.php, invezgo_proxy.php, fin_arjum.php, sentiment_proxy.php, fungsi finBuka TIDAK dibaca dan tidak diklaim terverifikasi.",
+    "Area ber-login kompetitor tidak dimasuki. Tidak ada percobaan autentikasi.",
+    "Tidak ada tombol ditekan di panel admin kompetitor; bulk_fetch.php sengaja tidak dibuka karena berpotensi memicu job.",
+    "Bursa tutup (hari Minggu) - pengukuran latensi dan verifikasi data intraday tidak mungkin dilakukan.",
+    "Harga dapat berubah. Semua angka rupiah adalah harga promosi per 2026-09-20 dan tidak menyertakan keterangan pajak.",
+    "Stooq tidak diverifikasi pada sesi ini."
+  ],
+
+  "langkah_uji_minimum": [
+    {
+      "tahap": 0, "nama": "Tanpa biaya, tanpa vendor", "durasi": "1-2 hari",
+      "langkah": [
+        { "no": 1, "aksi": "Dari server produksi Anda sendiri, uji apakah api.invezgo.com, stock.arjum.com, dan query1.finance.yahoo.com dapat dijangkau. Catat kode status dan header.", "alasan": "Tanpa ini seluruh rencana ingestion masih berpijak pada asumsi." },
+        { "no": 2, "aksi": "Kirim pertanyaan ke Invezgo dan Arjum.", "gate": "Jangan lanjut ke Tahap 2 sebelum pertanyaan adjusted price, satuan volume, konvensi tanggal, basis fundamental, penyimpanan database, hak tampil ke pihak ketiga, dan status Enterprise terjawab tertulis." }
+      ]
+    },
+    {
+      "tahap": 1, "nama": "Arjum gratis", "durasi": "2-3 hari",
+      "langkah": [
+        { "no": 3, "aksi": "Daftar akun Arjum, ambil API key gratis, catat kuota harian sebenarnya." },
+        { "no": 4, "aksi": "Tarik /api/history/{code} untuk 5 emiten uji: likuid (BBCA), pernah stock split, pernah reverse split, IPO baru, pernah disuspensi. Bandingkan close dengan GetStockSummary IDX pada 5 tanggal acak.", "alasan": "Uji penentu apakah harga ter-adjust." },
+        { "no": 5, "aksi": "Tarik /api/broker-summary/{code} untuk 1 emiten 1 tanggal, bandingkan total buy volume seluruh broker dengan Volume IDX tanggal sama.", "alasan": "Selisih besar = cakupan pasar berbeda." },
+        { "no": 6, "aksi": "Ukur berapa emiten yang benar-benar tercakup, bukan yang diklaim." }
+      ]
+    },
+    {
+      "tahap": 2, "nama": "Invezgo paket terkecil, satu bulan", "durasi": "1 minggu uji",
+      "langkah": [
+        { "no": 7, "aksi": "Beli Advance saja (Rp499.900). Jangan langsung Elite." },
+        { "no": 8, "aksi": "Jalankan uji langkah 4-6 terhadap /analysis/chart/stock. Verifikasi khusus konvensi tanggal T17:00Z terhadap hari bursa yang diketahui pasti." },
+        { "no": 9, "aksi": "Rekonsiliasi volume dan value /analysis/intraday-data terhadap Volume/Value IDX untuk menetapkan satuan secara empiris." },
+        { "no": 10, "aksi": "Tarik /analysis/financial-statement untuk 3 emiten (umum, bank, keuangan) dengan type=Q, uji apakah Q1+Q2+Q3+Q4 = FY.", "interpretasi": "Bila ya -> standalone. Bila Q4 mendekati FY -> kumulatif YTD." },
+        { "no": 11, "aksi": "Hitung berapa emiten dari 963 yang benar-benar mengembalikan 200 untuk tiap endpoint inti. Catat berapa yang 204." },
+        { "no": 12, "aksi": "Pantau /usage/api untuk mengukur konsumsi nyata satu siklus ingestion harian penuh, bandingkan dengan estimasi.", "gate": "Baru setelah angka nyata ini ada, pilih paket." },
+        { "no": 13, "aksi": "Ukur latensi respons nyata dari server Anda pada jam bursa; catat selisih timestamp payload vs waktu terima.", "alasan": "Satu-satunya cara menguji klaim 5 detik." }
+      ]
+    }
+  ],
+
+  "gerbang_keputusan": [
+    { "kondisi": "Langkah 4/8 membuktikan harga TIDAK ter-adjust dan /analysis/calendar tidak memberi rasio split yang dapat diurai terprogram", "konsekuensi": "Backtesting tidak dapat dipercaya; cakupan produk harus dipersempit." },
+    { "kondisi": "Pertanyaan hak tampil ke pihak ketiga dijawab 'tidak' oleh Invezgo dan Arjum tidak memberi izin tertulis", "konsekuensi": "Jalur website publik hanya tersisa lisensi BEI; harus dianggarkan sebelum membangun apa pun yang menghadap publik." },
+    { "kondisi": "Tahap 0 langkah 1 gagal dari server Anda", "konsekuensi": "Tidak ada vendor yang relevan sampai masalah jaringan selesai." }
+  ],
+
+  "disclaimer": "Laporan ini tidak menjanjikan akurasi sinyal entry. Tersedianya data tidak sama dengan validnya strategi; keduanya harus diuji terpisah."
+}

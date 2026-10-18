@@ -1,0 +1,1064 @@
+{
+  "meta": {
+    "judul": "Riset Sumber Data BEI untuk Website Screener Saham Indonesia",
+    "tanggal_pemeriksaan": "2026-09-19",
+    "zona_waktu": "Asia/Jakarta (UTC+7)",
+    "situs_diperiksa": "https://www.idx.co.id/",
+    "metode": "Pemeriksaan langsung via browser extension dengan akses Network (read_network_requests), navigasi menu resmi, dan uji parameter read-only bervolume kecil",
+    "legenda_bukti": {
+      "DIAMATI": "Hasil pengamatan langsung pada sesi ini",
+      "DOKUMENTASI": "Informasi yang dipublikasikan situs resmi BEI",
+      "DUGAAN": "Inferensi saya, belum diverifikasi"
+    },
+    "batasan_pemeriksaan": [
+      "Tidak melakukan pembelian, pendaftaran layanan, atau penerimaan kontrak",
+      "Tidak mengirim pesan apa pun",
+      "Tidak mencoba mengakali proteksi Cloudflare atau kontrol akses",
+      "Tidak mengklik tombol Unduh di halaman mana pun (unduhan butuh izin eksplisit pengguna)",
+      "Tidak ada cookie, token, API key, atau header autentikasi yang disalin ke laporan ini"
+    ],
+    "revisi": {
+      "versi": "1.1",
+      "tanggal_revisi": "2026-09-19",
+      "alasan": "Rekonsiliasi silang dengan laporan independen (GPT-6-astra effort low) atas situs yang sama pada tanggal yang sama.",
+      "koreksi_material": [
+        {
+          "topik": "Periode pengujian situs BEI mencemari sebagian observasi",
+          "isi": "Laporan pembanding mencatat pengumuman BEI tentang periode pengujian situs 18 Sep 2026 pukul 18.00 sampai 19 Sep 2026 pukul 20.00 WIB, dengan kode emiten DUMMY terlihat pada halaman Aksi Korporasi. SELURUH pengumpulan data pada laporan ini dilakukan 19 Sep 2026 sekitar pukul 13.15-14.00 WIB, yaitu DI DALAM jendela pengujian tersebut.",
+          "dampak_pada_temuan": {
+            "tidak_terpengaruh": "Temuan tingkat kontrak API (parameter date=YYYYMMDD, pengabaian draw/start/length, ketiadaan pagination, HTTP 200 pada tanggal invalid) adalah perilaku endpoint, bukan isi data, sehingga tetap berlaku.",
+            "kemungkinan_besar_tidak_terpengaruh": "Nilai historis (AADI 9425 pada 2026-08-14, dan seterusnya) karena baris historis tidak diregenerasi oleh pengujian.",
+            "PERLU_VERIFIKASI_ULANG": [
+              "Klaim bahwa GetAnnouncement mendekati real-time berdasarkan entri pukul 13:37 WIB pada hari Sabtu. Entri tersebut BISA JADI pengumuman uji. Rekomendasi E.8 (posisikan produk sebagai event-driven) bergantung pada klaim ini dan harus diuji ulang di luar jendela pengujian.",
+              "Jumlah baris 963 dan 965 serta isi snapshot 2026-09-18 mungkin memuat rekaman uji.",
+              "Isi halaman Aksi Korporasi tidak diperiksa pada laporan ini; laporan pembanding melihat kode DUMMY di sana."
+            ]
+          },
+          "bukti": "DOKUMENTASI pihak ketiga, belum saya verifikasi langsung"
+        },
+        {
+          "topik": "TradebleShares bukan free float resmi",
+          "isi": "Laporan ini menyebut ListedShares versus TradebleShares sebagai dasar free float. Koreksi: TradebleShares belum terbukti setara dengan angka free float resmi BEI. Gunakan pengumuman free float resmi bila tersedia, dan perlakukan TradebleShares sebagai proksi yang harus diberi label.",
+          "bukti": "Koreksi dari laporan pembanding, dinilai benar"
+        },
+        {
+          "topik": "Akses server-side ke idx.co.id",
+          "isi": "Uji lanjutan pada 2026-09-19 menggunakan pengambil HTTP server-side (bukan browser) terhadap dua URL idx.co.id menghasilkan HTTP 403 pada keduanya. Konsisten dengan proteksi bot Cloudflare. Tidak ada upaya melewati proteksi. Ini menjawab sementara pertanyaan terbuka F.2: otomatisasi dari server kemungkinan besar diblokir.",
+          "bukti": "DIAMATI"
+        }
+      ],
+      "dataset_yang_belum_tercakup_di_laporan_ini": {
+        "catatan": "Ditemukan laporan pembanding, TIDAK berhasil saya verifikasi (403 dari pengambil server-side). Perlakukan sebagai lead, bukan fakta.",
+        "status_verifikasi": "BELUM TERVERIFIKASI",
+        "daftar": [
+          {
+            "dataset": "Free float resmi",
+            "url_diklaim": "https://www.idx.co.id/id/perusahaan-tercatat/free-float-perusahaan-tercatat/",
+            "format_diklaim": "XLSX bulanan",
+            "nilai": "Menggantikan proksi TradebleShares dengan angka resmi"
+          },
+          {
+            "dataset": "Data kepemilikan saham (sumber KSEI, >5 persen)",
+            "url_diklaim": "https://www.idx.co.id/id/perusahaan-tercatat/data-kepemilikan-saham/",
+            "format_diklaim": "XLSX",
+            "nilai": "Kepemilikan bertanggal, lebih baik dari snapshot GetCompanyProfilesDetail"
+          },
+          {
+            "dataset": "Pengumuman konstituen indeks",
+            "url_diklaim": "https://www.idx.co.id/StaticData/NewsAndAnnouncement/ANNOUNCEMENTSTOCK/Exchange/ (berkas ZIP per evaluasi)",
+            "format_diklaim": "ZIP",
+            "nilai": "Keanggotaan indeks point-in-time; mencegah look-ahead bias pada backtest"
+          },
+          {
+            "dataset": "ESG Sustainalytics",
+            "url_diklaim": "https://sustainability.idx.co.id/sustainalytics",
+            "format_diklaim": "HTML dan unduhan",
+            "nilai": "Skor ESG 121 perusahaan; hak data pihak ketiga perlu diperiksa"
+          },
+          {
+            "dataset": "Revisi laporan keuangan",
+            "url_diklaim": "Halaman laporan keuangan yang sama",
+            "format_diklaim": "PDF bertanda Revisi",
+            "nilai": "Memerlukan versioning dokumen; laporan ini tidak membahasnya"
+          },
+          {
+            "dataset": "Sampel schema EOD dan ITCH",
+            "url_diklaim": "https://www.idx.co.id/media/8422/idx-equity-eod.zip dan seri itch-*-message.zip",
+            "format_diklaim": "ZIP",
+            "nilai": "Membuktikan schema feed berbayar sebelum berlangganan"
+          }
+        ]
+      },
+      "dokumen_lisensi_yang_diklaim": {
+        "catatan": "URL dari laporan pembanding, belum saya verifikasi. Laporan ini hanya menemukan halaman umum Layanan Data BEI.",
+        "status_verifikasi": "BELUM TERVERIFIKASI",
+        "daftar": [
+          {
+            "nama": "Catalogue & Pricelist Non-AB 2026",
+            "url": "https://www.idx.co.id/media/rzfl4wzy/20260513_idx-data-services-catalogue-pricelist-non-ab-2026.pdf"
+          },
+          {
+            "nama": "Data License Agreement 2026",
+            "url": "https://www.idx.co.id/media/xu0bddem/idx-data-license-agreement-2026.docx"
+          },
+          {
+            "nama": "General Terms of Use",
+            "url": "https://www.idx.co.id/media/vaupc3md/20240215_final-general-term-of-use-version-0-3-2024-efektif-1-january-2024-2.pdf"
+          }
+        ]
+      }
+    }
+  },
+  "A_kesimpulan_masalah_tanggal": {
+    "status": "TERPECAHKAN",
+    "penyebab_terverifikasi": "Nama parameter salah. Endpoint tidak mengenal startDate/endDate. Parameter yang benar adalah 'date' (tunggal).",
+    "mekanisme_kegagalan": "Server mengabaikan parameter yang tidak dikenal tanpa menghasilkan error, lalu jatuh ke nilai default = hari bursa terakhir. Karena itu respons tetap HTTP 200 namun berisi data 2026-09-18.",
+    "bukan_penyebab": [
+      {
+        "hipotesis": "Cache",
+        "bantahan": "Request identik dengan parameter 'date' yang benar langsung mengembalikan tanggal historis yang diminta.",
+        "bukti": "DIAMATI"
+      },
+      {
+        "hipotesis": "Endpoint hanya snapshot terakhir",
+        "bantahan": "Endpoint mendukung tanggal historis, hanya saja satu tanggal per request tanpa mode rentang.",
+        "bukti": "DIAMATI"
+      },
+      {
+        "hipotesis": "Pagination perlu diatur dengan draw/start/length",
+        "bantahan": "Ketiga parameter tersebut juga diabaikan sepenuhnya. Tidak ada pagination.",
+        "bukti": "DIAMATI"
+      }
+    ],
+    "dukungan_rentang_tanggal": {
+      "GetStockSummary": "TIDAK. Hanya satu tanggal per request.",
+      "GetAnnouncement": "YA. dateFrom dan dateTo berfungsi, pagination juga berfungsi.",
+      "catatan": "Konvensi parameter berbeda antar endpoint. Jangan menggeneralisasi dari satu endpoint ke endpoint lain."
+    }
+  },
+  "B_bukti_pengujian": {
+    "B1_via_antarmuka_resmi": {
+      "jalur_navigasi": "Beranda > Data Pasar > Ringkasan Perdagangan > Ringkasan Saham",
+      "url_halaman": "https://www.idx.co.id/id/data-pasar/ringkasan-perdagangan/ringkasan-saham/",
+      "jenis_pemilih_tanggal": "Kalender tanggal tunggal, bukan rentang",
+      "bukti": "DIAMATI",
+      "pengujian": [
+        {
+          "tanggal_dipilih": "2026-09-18",
+          "keterangan": "Default saat halaman dibuka",
+          "request_dipicu": null,
+          "catatan_request": "Tidak ada XHR - data dirender server-side",
+          "AADI_close": 11975,
+          "AALI_close": 8600,
+          "ACES_close": 350
+        },
+        {
+          "tanggal_dipilih": "2026-08-14",
+          "keterangan": "Dipilih lewat date picker halaman",
+          "request_dipicu": "GET https://www.idx.co.id/primary/TradingSummary/GetStockSummary?length=9999&start=0&date=20260814",
+          "AADI_close": 9425,
+          "AALI_close": 7475,
+          "ACES_close": 354
+        },
+        {
+          "tanggal_dipilih": "2026-07-15",
+          "keterangan": "Dipilih lewat date picker halaman",
+          "request_dipicu": "GET https://www.idx.co.id/primary/TradingSummary/GetStockSummary?length=9999&start=0&date=20260715",
+          "AADI_close": 8475,
+          "AALI_close": 6300,
+          "ACES_close": 346
+        }
+      ],
+      "kesimpulan": "Nilai berbeda pada tiga tanggal berbeda, sehingga pemilihan tanggal benar-benar berfungsi dan bukan tampilan ulang data yang sama."
+    },
+    "B2_matriks_uji_parameter": {
+      "endpoint": "https://www.idx.co.id/primary/TradingSummary/GetStockSummary",
+      "bukti": "DIAMATI",
+      "hasil": [
+        {
+          "query": "?startDate=2026-08-01&endDate=2026-08-30&draw=1&start=0&length=1000",
+          "label": "URL yang dilaporkan pengguna",
+          "http_status": 200,
+          "baris": 963,
+          "tanggal_dalam_respons": [
+            "2026-09-18"
+          ],
+          "draw_dalam_respons": 0,
+          "kesimpulan": "Bug pengguna tereproduksi persis. Parameter startDate/endDate diabaikan."
+        },
+        {
+          "query": "(tanpa parameter sama sekali)",
+          "http_status": 200,
+          "baris": 963,
+          "tanggal_dalam_respons": [
+            "2026-09-18"
+          ],
+          "kesimpulan": "Default = hari bursa terakhir."
+        },
+        {
+          "query": "?date=20260814",
+          "http_status": 200,
+          "baris": 963,
+          "tanggal_dalam_respons": [
+            "2026-08-14"
+          ],
+          "AADI_close": 9425,
+          "kesimpulan": "BERHASIL. Format YYYYMMDD diterima."
+        },
+        {
+          "query": "?date=2026-08-14",
+          "http_status": 200,
+          "baris": 963,
+          "tanggal_dalam_respons": [
+            "2026-08-14"
+          ],
+          "kesimpulan": "BERHASIL. Format YYYY-MM-DD bertanda hubung juga diterima."
+        },
+        {
+          "query": "?date=20260715",
+          "http_status": 200,
+          "baris": 965,
+          "tanggal_dalam_respons": [
+            "2026-07-15"
+          ],
+          "kesimpulan": "BERHASIL."
+        },
+        {
+          "query": "?date=20260814&date=20260715",
+          "http_status": 200,
+          "baris": 965,
+          "tanggal_dalam_respons": [
+            "2026-07-15"
+          ],
+          "kesimpulan": "Nilai terakhir menang. Tetap satu tanggal, tidak menjadi rentang."
+        },
+        {
+          "query": "?date=20260816",
+          "label": "Hari Minggu",
+          "http_status": 200,
+          "baris": 0,
+          "recordsTotal": 0,
+          "kesimpulan": "Array kosong dengan HTTP 200, bukan error."
+        },
+        {
+          "query": "?date=20220higher",
+          "label": "Tanggal tidak valid",
+          "http_status": 200,
+          "baris": 0,
+          "recordsTotal": 0,
+          "kesimpulan": "Array kosong dengan HTTP 200. Tidak ada sinyal error sama sekali."
+        },
+        {
+          "query": "?date=20260814&start=900&length=10&draw=7",
+          "http_status": 200,
+          "baris": 963,
+          "draw_dalam_respons": 0,
+          "baris_pertama": {
+            "No": 1,
+            "StockCode": "AADI"
+          },
+          "kesimpulan": "start, length, dan draw diabaikan seluruhnya."
+        },
+        {
+          "query": "?date=20260715&length=2",
+          "http_status": 200,
+          "baris": 965,
+          "kesimpulan": "length diabaikan. Tetap mengembalikan seluruh hari."
+        }
+      ],
+      "implikasi_operasional": [
+        {
+          "temuan": "Tanggal tidak valid dan hari libur sama-sama menghasilkan HTTP 200 dengan array kosong",
+          "tindakan": "Jangan gunakan status code sebagai sinyal sukses. Validasi data[0].Date sama dengan tanggal yang diminta."
+        },
+        {
+          "temuan": "Tidak ada pagination. recordsTotal selalu sama dengan data.length",
+          "tindakan": "Satu request menghasilkan seluruh emiten hari itu (sekitar 963-965 baris, kurang lebih 645 KB JSON). Backfill dilakukan dengan loop per hari bursa."
+        },
+        {
+          "temuan": "Jumlah baris berubah antar tanggal karena listing baru dan delisting",
+          "tindakan": "Jangan hard-code jumlah emiten."
+        }
+      ]
+    },
+    "B3_cakupan_historis": {
+      "metode": "Spot-check, bukan pemindaian menyeluruh",
+      "bukti": "DIAMATI",
+      "hasil": [
+        {
+          "tanggal": "2026-07-15",
+          "baris": 965
+        },
+        {
+          "tanggal": "2026-08-14",
+          "baris": 963
+        },
+        {
+          "tanggal": "2026-09-18",
+          "baris": 963
+        },
+        {
+          "tanggal": "2020-01-02",
+          "baris": 671,
+          "catatan": "Batas terlama yang berhasil"
+        },
+        {
+          "tanggal": "2019-12-30",
+          "baris": 0
+        },
+        {
+          "tanggal": "2019-12-02",
+          "baris": 0
+        },
+        {
+          "tanggal": "2019-01-02",
+          "baris": 0
+        },
+        {
+          "tanggal": "2018-01-02",
+          "baris": 0
+        },
+        {
+          "tanggal": "2015-01-05",
+          "baris": 0
+        },
+        {
+          "tanggal": "2010-01-04",
+          "baris": 0
+        }
+      ],
+      "kesimpulan": "Cakupan historis yang terverifikasi dimulai sekitar 2 Januari 2020."
+    },
+    "B4_request_minimal_terverifikasi": {
+      "metode": "GET",
+      "url": "https://www.idx.co.id/primary/TradingSummary/GetStockSummary?date=20260814",
+      "header_wajib": "Tidak ada kredensial, tidak ada header sesi, tidak ada cookie yang dikirim manual",
+      "parameter_opsional_yang_diabaikan": [
+        "length",
+        "start",
+        "draw"
+      ],
+      "caveat_penting": "Request ini dijalankan di dalam browser yang sudah melewati challenge Cloudflare. Saya mengamati request ke /cdn-cgi/challenge-platform/ pada tab tersebut. Saya TIDAK dapat memastikan request yang sama berhasil dari script server-side atau headless tanpa sesi browser. Ini harus diuji sendiri.",
+      "bukti": "DIAMATI"
+    },
+    "B5_field_respons": {
+      "jumlah_field": 30,
+      "bukti": "DIAMATI",
+      "field": [
+        "No",
+        "IDStockSummary",
+        "Date",
+        "StockCode",
+        "StockName",
+        "Remarks",
+        "Previous",
+        "OpenPrice",
+        "FirstTrade",
+        "High",
+        "Low",
+        "Close",
+        "Change",
+        "Volume",
+        "Value",
+        "Frequency",
+        "IndexIndividual",
+        "Offer",
+        "OfferVolume",
+        "Bid",
+        "BidVolume",
+        "ListedShares",
+        "TradebleShares",
+        "WeightForIndex",
+        "ForeignSell",
+        "ForeignBuy",
+        "DelistingDate",
+        "NonRegularVolume",
+        "NonRegularValue",
+        "NonRegularFrequency",
+        "persen",
+        "percentage"
+      ],
+      "field_bernilai_tinggi": {
+        "ForeignBuy_ForeignSell": "Aliran dana asing per saham per hari",
+        "ListedShares_TradebleShares": "Dasar perhitungan free float",
+        "Bid_Offer_beserta_volume": "Snapshot 1 level pada penutupan",
+        "NonRegularVolume_Value_Frequency": "Pasar negosiasi dan tunai, terpisah dari pasar reguler",
+        "Remarks": "String 30 karakter yang memuat notasi khusus dan status papan"
+      },
+      "contoh_remarks": [
+        {
+          "kode": "AADI",
+          "remarks": "--MO1SD0F10000A121------------"
+        },
+        {
+          "kode": "ABBA",
+          "remarks": "--U-4100000000E614-E---------X"
+        }
+      ],
+      "keterbatasan_remarks": "Kamus resmi untuk membaca string Remarks TIDAK saya temukan di situs. Perlu reverse-engineering."
+    }
+  },
+  "C_inventaris_sumber_data": {
+    "C1_endpoint_teramati": [
+      {
+        "dataset": "Ringkasan Saham (OHLCV harian)",
+        "url_halaman_resmi": "https://www.idx.co.id/id/data-pasar/ringkasan-perdagangan/ringkasan-saham/",
+        "endpoint": "GET /primary/TradingSummary/GetStockSummary?date=YYYYMMDD",
+        "field_penting": "30 field, lihat B5. Termasuk OHLC, Volume, Value, Frequency, ForeignBuy/Sell, ListedShares, TradebleShares, Bid/Offer, NonRegular*",
+        "cakupan_historis": "Terverifikasi sejak 2020-01-02",
+        "frekuensi_delay": "End of Day. Pada 2026-09-19 pukul 13:4x WIB masih menyajikan data 18 Sep, sehingga T+0 setelah penutupan, bukan intraday",
+        "format": "JSON",
+        "butuh_login": false,
+        "kelayakan_otomatisasi": "Tinggi",
+        "bukti": "DIAMATI",
+        "keterbatasan": "Tanpa pagination. Satu request per hari bursa. Tunduk pada Syarat Penggunaan BEI."
+      },
+      {
+        "dataset": "Ringkasan Broker",
+        "url_halaman_resmi": "https://www.idx.co.id/id/data-pasar/ringkasan-perdagangan/ringkasan-broker/",
+        "endpoint": "GET /primary/TradingSummary/GetBrokerSummary?length=9999&start=0&date=YYYYMMDD",
+        "field_penting": "Kode Perusahaan, Nama Perusahaan, Volume, Nilai, Frekuensi",
+        "cakupan_historis": "belum diketahui",
+        "frekuensi_delay": "End of Day",
+        "format": "JSON",
+        "butuh_login": false,
+        "kelayakan_otomatisasi": "Tinggi",
+        "bukti": "DIAMATI - dipicu lewat date picker resmi",
+        "keterbatasan": "Agregat per broker untuk seluruh pasar. BUKAN data broker per saham."
+      },
+      {
+        "dataset": "Ringkasan Margin",
+        "url_halaman_resmi": "Tab Margin pada halaman Ringkasan Saham",
+        "endpoint": "GET /primary/TradingSummary/GetMarginSummary?length=9999&start=0[&date=YYYYMMDD]",
+        "field_penting": "No, Date, Efek, High, Low, Close, Change, Volume, Value, Frekuensi",
+        "cakupan_historis": "belum diketahui",
+        "frekuensi_delay": "End of Day",
+        "format": "JSON",
+        "butuh_login": false,
+        "kelayakan_otomatisasi": "Tinggi",
+        "bukti": "DIAMATI",
+        "keterbatasan": "Antarmuka tidak mengirim parameter date, namun endpoint MENERIMANYA. Uji dengan date=20260814 mengembalikan 234 baris tertanggal 2026-08-14."
+      },
+      {
+        "dataset": "Ringkasan Short Selling",
+        "url_halaman_resmi": "Tab Short Selling pada halaman Ringkasan Saham",
+        "endpoint": "GET /primary/TradingSummary/GetShortSellSummary?length=9999&start=0",
+        "field_penting": "belum diketahui",
+        "cakupan_historis": "belum diketahui",
+        "frekuensi_delay": "belum diketahui",
+        "format": "JSON",
+        "butuh_login": false,
+        "kelayakan_otomatisasi": "belum diketahui",
+        "bukti": "DIAMATI",
+        "keterbatasan": "Mengembalikan 0 baris saat diperiksa, baik dengan maupun tanpa parameter date. Perlu dicek ulang pada hari bursa aktif."
+      },
+      {
+        "dataset": "Ringkasan Indeks (snapshot)",
+        "url_halaman_resmi": "https://www.idx.co.id/id/data-pasar/ringkasan-perdagangan/ringkasan-indeks",
+        "endpoint": "GET /primary/StockData/GetConstituent",
+        "field_penting": "IndexCode, PrevVal, HighVal, LowVal, LastVal, ChgVal, ChgPct, DtCreate",
+        "cakupan_historis": "Snapshot terakhir saja",
+        "frekuensi_delay": "DtCreate menunjukkan 2026-09-18T16:00:00",
+        "format": "JSON",
+        "butuh_login": false,
+        "kelayakan_otomatisasi": "Sedang",
+        "bukti": "DIAMATI",
+        "keterbatasan": "Tidak ada parameter tanggal yang teramati. Respons memuat Links.Href berisi /api/api/marketsummary/indexsummary/{KODE} yang merupakan jalur internal dan BELUM saya uji."
+      },
+      {
+        "dataset": "Laporan Keuangan dan XBRL",
+        "url_halaman_resmi": "https://www.idx.co.id/id/perusahaan-tercatat/laporan-keuangan-dan-tahunan/",
+        "endpoint": "GET /primary/ListedCompany/GetFinancialReport?indexFrom=1&pageSize=N&year=YYYY&reportType=rdf&EmitenType=s&periode=tw1|tw2|tw3|audit&kodeEmiten=XXXX&SortColumn=KodeEmiten&SortOrder=asc",
+        "field_penting": "Attachments[] berisi File_Name, File_Path, File_Size, File_Type, File_Modified",
+        "cakupan_historis": "Terverifikasi hingga 2019",
+        "frekuensi_delay": "Triwulanan",
+        "format": "JSON yang menunjuk ke .xlsx, instance.zip (XBRL), inlineXBRL.zip, dan .pdf",
+        "butuh_login": false,
+        "kelayakan_otomatisasi": "Tinggi",
+        "bukti": "DIAMATI",
+        "keterbatasan": "Pagination BENAR-BENAR berfungsi pada endpoint ini, berbeda dengan GetStockSummary.",
+        "contoh_lampiran_BBCA_TW1_2026": [
+          {
+            "nama": "FinancialStatement-2026-I-BBCA.xlsx",
+            "tipe": ".xlsx",
+            "ukuran_byte": 305377
+          },
+          {
+            "nama": "instance.zip",
+            "tipe": ".zip",
+            "ukuran_byte": 80554
+          },
+          {
+            "nama": "Lapkeu BCA Mar 26.pdf",
+            "tipe": ".pdf",
+            "ukuran_byte": 2713904
+          },
+          {
+            "nama": "FinancialStatement-2026-I-BBCA.pdf",
+            "tipe": ".pdf",
+            "ukuran_byte": 493492
+          },
+          {
+            "nama": "inlineXBRL.zip",
+            "tipe": ".zip",
+            "ukuran_byte": 175768
+          }
+        ]
+      },
+      {
+        "dataset": "Keterbukaan Informasi dan Pengumuman",
+        "url_halaman_resmi": "https://www.idx.co.id/id/perusahaan-tercatat/keterbukaan-informasi/",
+        "endpoint": "GET /primary/ListedCompany/GetAnnouncement?kodeEmiten=&emitenType=*&indexFrom=0&pageSize=N&dateFrom=YYYYMMDD&dateTo=YYYYMMDD&lang=id&keyword=...",
+        "field_penting": "NoPengumuman, TglPengumuman, JudulPengumuman, PerihalPengumuman, JenisPengumuman, Kode_Emiten, Form_Id, attachments[].FullSavePath",
+        "cakupan_historis": "dateFrom diterima hingga 19010101",
+        "frekuensi_delay": "Mendekati real-time. Saya melihat entri terbit pukul 13:37 WIB pada hari yang sama, termasuk di akhir pekan.",
+        "format": "JSON plus lampiran PDF",
+        "butuh_login": false,
+        "kelayakan_otomatisasi": "Tinggi",
+        "bukti": "DIAMATI",
+        "keterbatasan": "Endpoint ini MENDUKUNG rentang tanggal dan pagination sungguhan. pageSize=3 benar-benar mengembalikan 3 baris. Kontras tajam dengan GetStockSummary."
+      },
+      {
+        "dataset": "Profil Perusahaan Tercatat",
+        "url_halaman_resmi": "https://www.idx.co.id/id/perusahaan-tercatat/profil-perusahaan-tercatat/{KODE}",
+        "endpoint": "GET /primary/ListedCompany/GetCompanyProfilesDetail?KodeEmiten=BBCA&language=id-id",
+        "field_penting": "Profiles (Sektor, SubSektor, Industri, SubIndustri, PapanPencatatan, TanggalPencatatan, KegiatanUsahaUtama, Status, Alamat, Website), PemegangSaham[] (Nama, Kategori, Jumlah, Persentase, Pengendali), Direktur[], Komisaris[], KomiteAudit[], AnakPerusahaan[], Sekretaris[]",
+        "cakupan_historis": "Snapshot terkini",
+        "frekuensi_delay": "belum diketahui",
+        "format": "JSON",
+        "butuh_login": false,
+        "kelayakan_otomatisasi": "Tinggi",
+        "bukti": "DIAMATI - BBCA mengembalikan 20 pemegang saham, 12 direktur, 4 komisaris, 7 anak perusahaan",
+        "keterbatasan": "Tidak ada histori perubahan kepemilikan."
+      },
+      {
+        "dataset": "Stock Screener BEI",
+        "url_halaman_resmi": "https://www.idx.co.id/id/investhub/stock-screener/",
+        "endpoint": "GET /primary/StockScreener/GetColumnInfoUrl?lang=id (metadata kolom saja)",
+        "field_penting": "Data tabel memuat Nama Perusahaan, Kode Saham, Sektor, Subsektor, Industri, Subindustri, Index[], PER, PBV, ROE persen, ROA persen, DER, Mkt Cap untuk 960 emiten",
+        "cakupan_historis": "Snapshot",
+        "frekuensi_delay": "belum diketahui",
+        "format": "Server-side rendered di dalam HTML",
+        "butuh_login": false,
+        "kelayakan_otomatisasi": "Sedang",
+        "bukti": "DIAMATI",
+        "keterbatasan": "Endpoint data TIDAK teramati. Tabel dirender server-side dan tombol TERAPKAN tidak memicu XHR. Ini adalah sumber keanggotaan indeks dan rasio fundamental yang sudah siap pakai."
+      },
+      {
+        "dataset": "Daftar Saham",
+        "url_halaman_resmi": "https://www.idx.co.id/id/data-pasar/data-saham/daftar-saham/",
+        "endpoint": null,
+        "field_penting": "Kode, Nama Perusahaan, Tanggal Pencatatan, Jumlah Saham, Papan Pencatatan",
+        "cakupan_historis": "962 emiten, snapshot",
+        "frekuensi_delay": "belum diketahui",
+        "format": "Server-side rendered",
+        "butuh_login": false,
+        "kelayakan_otomatisasi": "Sedang",
+        "bukti": "DIAMATI",
+        "keterbatasan": "Paginasi sepenuhnya client-side. Klik halaman berikutnya menghasilkan NOL request jaringan. Tombol Unduh tersedia namun tidak saya klik."
+      }
+    ],
+    "C2_halaman_resmi_tanpa_endpoint_terkonfirmasi": {
+      "catatan": "Halaman dibuka dan URL terverifikasi, namun tidak ada XHR data yang teramati. Kemungkinan server-side rendered atau memerlukan interaksi yang belum dilakukan. Endpoint = belum diketahui.",
+      "bukti": "DIAMATI",
+      "daftar": [
+        {
+          "dataset": "Indeks Saham (daftar dan konstituen)",
+          "url": "https://www.idx.co.id/id/data-pasar/data-saham/indeks-saham/"
+        },
+        {
+          "dataset": "Ringkasan Perdagangan dan Rekapitulasi",
+          "url": "https://www.idx.co.id/id/data-pasar/ringkasan-perdagangan/ringkasan-perdagangan-dan-rekapitulasi"
+        },
+        {
+          "dataset": "Ringkasan PED",
+          "url": "https://www.idx.co.id/id/data-pasar/ringkasan-perdagangan/ringkasan-ped/"
+        },
+        {
+          "dataset": "Notasi Khusus",
+          "url": "https://www.idx.co.id/id/perusahaan-tercatat/notasi-khusus/"
+        },
+        {
+          "dataset": "Efek Pada Papan Pemantauan Khusus",
+          "url": "https://www.idx.co.id/id/perusahaan-tercatat/daftar-efek-pemantauan-khusus/"
+        },
+        {
+          "dataset": "Aksi Korporasi",
+          "url": "https://www.idx.co.id/id/perusahaan-tercatat/aksi-korporasi/"
+        },
+        {
+          "dataset": "Kalender Perusahaan Tercatat",
+          "url": "https://www.idx.co.id/id/perusahaan-tercatat/kalender-perusahaan-tercatat/"
+        },
+        {
+          "dataset": "Unusual Market Activity (UMA)",
+          "url": "https://www.idx.co.id/id/berita/unusual-market-activity-uma/"
+        },
+        {
+          "dataset": "Suspensi",
+          "url": "https://www.idx.co.id/id/berita/suspensi/"
+        },
+        {
+          "dataset": "Efek Tidak Dijamin (ETD)",
+          "url": "https://www.idx.co.id/id/berita/efek-tidak-dijamin-etd/"
+        },
+        {
+          "dataset": "Daftar Saham Marjin dan Short Selling",
+          "url": "https://www.idx.co.id/id/data-pasar/data-saham/daftar-saham-marjin/"
+        },
+        {
+          "dataset": "Daftar Efek Liquidity Provider Saham",
+          "url": "https://www.idx.co.id/id/data-pasar/data-saham/daftar-efek-liquidity-provider-saham/"
+        },
+        {
+          "dataset": "Statistik",
+          "url": "https://www.idx.co.id/id/data-pasar/laporan-statistik/statistik/"
+        },
+        {
+          "dataset": "Digital Statistic",
+          "url": "https://www.idx.co.id/id/data-pasar/laporan-statistik/digital-statistic/"
+        },
+        {
+          "dataset": "Jadwal Libur Bursa",
+          "url": "https://www.idx.co.id/id/tentang-bei/jadwal-libur-bursa/"
+        },
+        {
+          "dataset": "Indeks Saham Syariah",
+          "url": "https://www.idx.co.id/id/idx-syariah/indeks-saham-syariah/"
+        },
+        {
+          "dataset": "XBRL (taksonomi dan dokumentasi, bukan data)",
+          "url": "https://www.idx.co.id/id/perusahaan-tercatat/xbrl/"
+        },
+        {
+          "dataset": "Public Expose Live",
+          "url": "https://www.idx.co.id/id/investor/public-expose-live/"
+        },
+        {
+          "dataset": "Laporan Keberlanjutan",
+          "url": "https://www.idx.co.id/id/tentang-bei/laporan-keberlanjutan/"
+        },
+        {
+          "dataset": "Website ESG",
+          "url": "https://sustainability.idx.co.id/"
+        }
+      ],
+      "dugaan_belum_diverifikasi": {
+        "isi": "GetAnnouncement memiliki field JenisPengumuman dan Form_Id, sehingga UMA, suspensi, notasi khusus, dan aksi korporasi KEMUNGKINAN dapat difilter lewat endpoint yang sama.",
+        "bukti": "DUGAAN",
+        "peringatan": "Belum diverifikasi. Jangan diasumsikan benar."
+      }
+    },
+    "C3_data_berbayar": {
+      "temuan_utama": "Tidak ditemukan sumber publik untuk running trade, order book multi-level, maupun data broker per saham. Yang tersedia hanya snapshot bid/offer 1 level pada penutupan di dalam GetStockSummary.",
+      "bukti": "DIAMATI",
+      "url_halaman_resmi": "https://www.idx.co.id/id/produk/layanan-data-bei",
+      "sumber_informasi_produk": "DOKUMENTASI",
+      "produk_lisensi": [
+        {
+          "nama": "IDX ITCH Total View / Basic / Last Sale",
+          "isi": "Kedalaman order book penuh dan last sale. Inilah sumber order flow dan running trade."
+        },
+        {
+          "nama": "IDX-i Equity Real Time / Delayed 5 Level Market Depth",
+          "isi": "Bid dan offer 5 level"
+        },
+        {
+          "nama": "IDX-i Equity Real Time / Delayed Order",
+          "isi": "Data order"
+        },
+        {
+          "nama": "IDX Equity EoD (Professional / Basic / Indices / Indices Weight / Recapitulation)",
+          "isi": "End of Day terstruktur beserta bobot indeks"
+        },
+        {
+          "nama": "IDX Data Reference (Enterprise Package)",
+          "isi": "Lebih dari 800 perusahaan tercatat: laporan keuangan, aksi korporasi, keterbukaan informasi"
+        },
+        {
+          "nama": "IDX Index License",
+          "isi": "Lisensi indeks untuk produk ETF, reksa dana, atau benchmark"
+        },
+        {
+          "nama": "IDX Connection License",
+          "isi": "Lisensi bagi perusahaan yang ingin menjadi Network Service Provider"
+        },
+        {
+          "nama": "IDX Publication",
+          "isi": "Publikasi statistik rutin BEI"
+        }
+      ],
+      "kategori_lisensi": [
+        "Display",
+        "Non-Display (dibagi 4 kategori penggunaan)"
+      ],
+      "catatan_redistributor": "Untuk menjadi redistributor, wajib memegang lisensi kategori Display terlebih dahulu.",
+      "cara_akses": {
+        "koneksi_langsung": "Via Network Service Provider dengan leased line bandwidth minimum 8.5 Mbps",
+        "nsp_terdaftar": [
+          "PT Artha Telekomindo (Arthatel)",
+          "PT Cyberindo Aditama (CBN)",
+          "PT Nap Info (Matrix)",
+          "PT Supra Primatama Nusantara (Biznet)",
+          "PT Aplikanusa Lintasarta (Lintasarta)",
+          "IPC Network Services Asia Ltd Singapore Branch",
+          "Transaction Network Services SG Pte Limited"
+        ],
+        "koneksi_tidak_langsung": "Via redistributor terdaftar",
+        "redistributor_lokal": [
+          "Perum LKBN Antara (d/h PT IMQ Multimedia Utama)",
+          "PT IQ Plus Prima",
+          "PT RTI Infokom",
+          "PT IDX Solusi Teknologi Informasi"
+        ],
+        "redistributor_asing": [
+          "Active Financial Systems Inc.",
+          "Bloomberg Finance L.P",
+          "Factset Research System Inc.",
+          "FIS Data Systems Inc.",
+          "ICE Data Services Inc.",
+          "Baha Tech Holding AG",
+          "Morningstar Real Time Data Ltd.",
+          "Refinitiv Asia Pte. Ltd.",
+          "SIX Financial Information Ltd"
+        ]
+      },
+      "biaya": {
+        "status": "TIDAK DILAPORKAN",
+        "alasan": "Tabel Biaya pada halaman resmi kosong saat dibaca. Terdapat PDF price list terpisah yang tidak saya buka dan tidak saya verifikasi kemutakhirannya. Mintalah quotation resmi dari BEI."
+      }
+    },
+    "C4_syarat_penggunaan": {
+      "tingkat_kepentingan": "KRITIS - PEMBLOKIR",
+      "url": "https://www.idx.co.id/id/syarat-penggunaan",
+      "bukti": "DOKUMENTASI",
+      "larangan_eksplisit": [
+        {
+          "topik": "Penggunaan komersial",
+          "kutipan": "Pengguna dilarang menggunakan atau menyebarluaskan Informasi dan atau data yang diperoleh dari Website kepada pihak lain untuk tujuan komersial tanpa izin tertulis terlebih dahulu dari Bursa Efek Indonesia",
+          "implikasi": "Website screener komersial yang memakai data ini memerlukan izin tertulis BEI terlebih dahulu."
+        },
+        {
+          "topik": "Scraping dan crawling",
+          "kutipan": "Penggunaan Informasi dan atau data bukan untuk tujuan komersial diperbolehkan dengan menyebutkan sumbernya secara lengkap disertai tanggal akses dan tidak diperkenankan menggunakan metode web scrapping/crawling",
+          "implikasi": "Larangan scraping dan crawling berlaku BAHKAN untuk penggunaan non-komersial. Rencana pengambilan data otomatis terjadwal ke /primary/ berada di wilayah ini. Endpoint publik dan tidak diproteksi, tetapi publik tidak berarti boleh dipakai ulang."
+        }
+      ],
+      "pembatasan_3_tahun": {
+        "isi_dokumentasi": "Informasi dan data terkait Perusahaan Tercatat yang ditampilkan di Website adalah data 3 tahun terakhir. Di luar periode tersebut tersedia melalui TICMI (ticmi.co.id).",
+        "kontradiksi_teramati": "GetFinancialReport dengan year=2019 mengembalikan lampiran lengkap BBCA 2019, dan GetStockSummary dengan date=20200102 mengembalikan 671 baris. Keduanya lebih dari 3 tahun.",
+        "bukti_kontradiksi": "DIAMATI",
+        "saran": "Jangan bersandar pada perilaku ini. Syarat Penggunaan menyatakan BEI dapat mengubah sewaktu-waktu tanpa pemberitahuan."
+      },
+      "jalur_legal": [
+        "Berlangganan IDX Data Services dengan lisensi Display dan/atau Non-Display sesuai kebutuhan produk",
+        "Melalui redistributor terdaftar. PT RTI Infokom adalah preseden lokal yang paling dekat dengan model produk ini."
+      ],
+      "disclaimer": "Ini bukan nasihat hukum. Konsultasikan dengan penasihat hukum yang berkualifikasi."
+    }
+  },
+  "D_pemetaan_fitur": {
+    "didukung_data_bei_terverifikasi": [
+      {
+        "no": 1,
+        "fitur": "Watchlist dan simpan filter",
+        "sumber": "Data internal aplikasi + GetStockSummary",
+        "catatan": "Tidak butuh sumber tambahan"
+      },
+      {
+        "no": 2,
+        "fitur": "Pencarian dan profil saham",
+        "sumber": "GetCompanyProfilesDetail + GetStockSummary",
+        "catatan": "Profil, sektor, papan, direksi, pemegang saham"
+      },
+      {
+        "no": 3,
+        "fitur": "Dashboard dan heatmap",
+        "sumber": "GetStockSummary (Change, Value) + Stock Screener (sektor, Mkt Cap)",
+        "catatan": "Bobot sektor lengkap tersedia"
+      },
+      {
+        "no": 4,
+        "fitur": "Grafik dan indikator",
+        "sumber": "GetStockSummary per hari, backfill sejak 2020-01-02",
+        "catatan": "Hanya End of Day, tidak ada intraday"
+      },
+      {
+        "no": 5,
+        "fitur": "Screener teknikal",
+        "sumber": "GetStockSummary historis",
+        "catatan": "Sekitar 1.700 hari bursa untuk backfill penuh"
+      },
+      {
+        "no": 6,
+        "fitur": "Screener fundamental",
+        "sumber": "Stock Screener BEI (PER, PBV, ROE, ROA, DER, MktCap) + GetFinancialReport (.xlsx dan XBRL)",
+        "catatan": "XBRL adalah fundamental terstruktur yang sesungguhnya"
+      },
+      {
+        "no": 7,
+        "fitur": "Preset strategi dengan alasan lolos",
+        "sumber": "Kombinasi fitur 5 dan 6",
+        "catatan": "Logika merupakan milik Anda sendiri"
+      },
+      {
+        "no": 8,
+        "fitur": "Alert",
+        "sumber": "GetAnnouncement (rentang tanggal dan pagination berfungsi) + GetStockSummary",
+        "catatan": "Alert End of Day dan keterbukaan informasi, BUKAN alert harga real-time"
+      },
+      {
+        "no": 9,
+        "fitur": "Kalender peristiwa",
+        "sumber": "GetAnnouncement (JenisPengumuman, Form_Id)",
+        "catatan": "Halaman Kalender dan Aksi Korporasi ada, tetapi endpoint belum dikonfirmasi"
+      },
+      {
+        "no": 10,
+        "fitur": "Skor kualitas, valuasi, momentum, dan likuiditas",
+        "sumber": "Momentum dan likuiditas dari GetStockSummary (Volume, Value, Frequency); valuasi dan kualitas dari Stock Screener dan XBRL",
+        "catatan": "Seluruh input tersedia"
+      }
+    ],
+    "sebagian_didukung_butuh_sumber_tambahan": [
+      {
+        "no": 12,
+        "fitur": "Broker, foreign flow, dan kepemilikan",
+        "yang_ada": "Foreign flow per saham per hari (ForeignBuy dan ForeignSell). Kepemilikan (PemegangSaham beserta ListedShares dan TradebleShares untuk free float).",
+        "yang_kurang": "Data broker per saham TIDAK ADA. GetBrokerSummary hanya agregat per broker untuk seluruh pasar, sehingga tidak dapat menjawab pertanyaan seperti broker mana yang mengakumulasi di BBRI."
+      },
+      {
+        "no": 13,
+        "fitur": "Skenario entry dan risiko",
+        "yang_ada": "ATR dan volatilitas dapat dihitung dari OHLC harian",
+        "yang_kurang": "Slippage dan kedalaman order book memerlukan data berbayar"
+      },
+      {
+        "no": 14,
+        "fitur": "Backtest dan simulasi",
+        "yang_ada": "Harga End of Day sejak 2020",
+        "yang_kurang": "Tidak ada penyesuaian corporate action. Relasi Previous terhadap Close akan patah saat stock split atau dividen. Harus dibangun dari data aksi korporasi yang endpoint-nya belum dikonfirmasi."
+      },
+      {
+        "no": 18,
+        "fitur": "Model prediksi",
+        "yang_ada": "Data latih End of Day",
+        "yang_kurang": "Walk-forward dan out-of-sample testing wajib dilakukan. Jangan mengklaim akurasi sebelum diuji secara ketat."
+      }
+    ],
+    "belum_ditemukan_datanya": [
+      {
+        "no": 11,
+        "fitur": "Berita dan sentimen",
+        "status": "Tidak ada feed berita pasar di situs BEI selain pengumuman resmi. Memerlukan penyedia berita terpisah."
+      }
+    ],
+    "memerlukan_layanan_berbayar": [
+      {
+        "no": 15,
+        "fitur": "Estimasi rata-rata transaksi beli broker",
+        "produk_lisensi": "IDX ITCH atau IDX-i Equity Real Time Order",
+        "catatan": "Tidak dapat diturunkan dari data publik"
+      },
+      {
+        "no": 16,
+        "fitur": "Running trade",
+        "produk_lisensi": "IDX ITCH Last Sale"
+      },
+      {
+        "no": 17,
+        "fitur": "Order flow",
+        "produk_lisensi": "IDX ITCH Total View atau IDX-i 5 Level Market Depth"
+      }
+    ]
+  },
+  "E_rekomendasi": [
+    {
+      "no": 1,
+      "judul": "Verified As-Of pada setiap tampilan",
+      "logika": "Tanggal tidak valid dan hari libur sama-sama menghasilkan HTTP 200 dengan array kosong, sehingga pipeline dapat diam-diam menyimpan data hari yang salah.",
+      "data_input": "Field Date dari respons, bukan tanggal yang diminta",
+      "pembaruan": "Setiap ingest",
+      "kesulitan": "Rendah",
+      "keterbatasan": "Tidak ada"
+    },
+    {
+      "no": 2,
+      "judul": "Screener berbasis field Remarks",
+      "logika": "String 30 karakter memuat notasi khusus dan status papan. Bandingkan ABBA (--U-4100000000E614-E---------X) dengan AADI (--MO1SD0F10000A121------------). Memungkinkan filter kecualikan saham bernotasi khusus atau papan pemantauan yang tidak dimiliki screener lain.",
+      "data_input": "GetStockSummary.Remarks",
+      "pembaruan": "Harian",
+      "kesulitan": "Sedang",
+      "keterbatasan": "Memerlukan reverse-engineering kamus karakter karena dokumentasi resmi tidak ditemukan"
+    },
+    {
+      "no": 3,
+      "judul": "Screener free float",
+      "logika": "ListedShares dibandingkan TradebleShares tersedia per hari. Contoh ACRO: 3,47 miliar listed versus 749 juta tradeable. Disilangkan dengan PemegangSaham.Persentase dan flag Pengendali menghasilkan filter saham dengan float tipis.",
+      "data_input": "GetStockSummary + GetCompanyProfilesDetail",
+      "pembaruan": "Harian untuk shares, berkala untuk kepemilikan",
+      "kesulitan": "Rendah",
+      "keterbatasan": "Data kepemilikan hanya snapshot, tanpa histori perubahan"
+    },
+    {
+      "no": 4,
+      "judul": "Foreign flow akumulatif",
+      "logika": "ForeignBuy dikurangi ForeignSell per hari, diakumulasi 5, 20, dan 60 hari, dinormalisasi terhadap Volume.",
+      "data_input": "GetStockSummary",
+      "pembaruan": "Harian",
+      "kesulitan": "Rendah",
+      "keterbatasan": "Tidak ada. Fitur bernilai tinggi tanpa perlu langganan."
+    },
+    {
+      "no": 5,
+      "judul": "Deteksi likuiditas semu",
+      "logika": "Banyak emiten menunjukkan Volume nol namun Close tetap tercatat, misalnya ABBA, ADCP, dan ALTO. Tandai sebagai tidak ada transaksi hari ini alih-alih menampilkannya sebagai harga wajar.",
+      "data_input": "GetStockSummary.Volume dan Frequency",
+      "pembaruan": "Harian",
+      "kesulitan": "Rendah",
+      "keterbatasan": "Tidak ada"
+    },
+    {
+      "no": 6,
+      "judul": "Arbitrase pasar reguler versus non-reguler",
+      "logika": "NonRegularVolume, NonRegularValue, dan NonRegularFrequency terpisah. Contoh APIC pada 15 Juli: volume reguler 965.300 tetapi non-reguler 26,5 juta senilai sekitar Rp 20 miliar. Sinyal crossing atau transaksi blok besar yang tidak terlihat pada chart biasa.",
+      "data_input": "GetStockSummary field NonRegular*",
+      "pembaruan": "Harian",
+      "kesulitan": "Rendah",
+      "keterbatasan": "Hampir tidak ada screener retail yang menampilkan ini, sehingga menjadi diferensiasi"
+    },
+    {
+      "no": 7,
+      "judul": "Pipeline XBRL mandiri",
+      "logika": "instance.zip dan FinancialStatement-{tahun}-{periode}-{kode}.xlsx adalah fundamental terstruktur langsung dari sumber. Bangun parser sendiri, jangan bergantung pada rasio siap-saji Stock Screener yang metodologi dan waktu pembaruannya tidak terdokumentasi.",
+      "data_input": "GetFinancialReport lampiran",
+      "pembaruan": "Triwulanan",
+      "kesulitan": "Tinggi",
+      "keterbatasan": "Parsing XBRL memerlukan pemahaman taksonomi BEI"
+    },
+    {
+      "no": 8,
+      "judul": "Alert peristiwa, bukan alert harga",
+      "logika": "GetAnnouncement mendukung rentang tanggal dan pagination sungguhan, dan entri terbit pada hari yang sama pukul 13:37 WIB bahkan di akhir pekan. Alert RUPS, dividen, dan aksi korporasi untuk saham di watchlist dapat mendekati real-time, berbeda dengan harga yang hanya End of Day.",
+      "data_input": "GetAnnouncement",
+      "pembaruan": "Polling berkala",
+      "kesulitan": "Rendah",
+      "keterbatasan": "Positioning produk sebaiknya event-driven, bukan price-tick-driven"
+    },
+    {
+      "no": 9,
+      "judul": "Backfill sekali, inkremental setelahnya",
+      "logika": "Sekitar 1.700 hari bursa sejak 2020-01-02 dikali kurang lebih 645 KB sama dengan sekitar 1,1 GB JSON, dilakukan sekali dengan throttle sopan. Setelah itu cukup 1 request per hari.",
+      "data_input": "GetStockSummary",
+      "pembaruan": "Harian setelah backfill",
+      "kesulitan": "Sedang",
+      "keterbatasan": "Volume request yang kecil ini juga menjadi argumen kuat dalam negosiasi lisensi"
+    }
+  ],
+  "F_hambatan_dan_langkah_berikutnya": {
+    "hambatan": [
+      {
+        "no": 1,
+        "hambatan": "Syarat Penggunaan melarang scraping dan penggunaan komersial tanpa izin tertulis",
+        "tingkat": "PEMBLOKIR",
+        "detail": "Lihat bagian C4. Ini masalah hukum, bukan teknis, dan tidak dapat diselesaikan dengan kode."
+      },
+      {
+        "no": 2,
+        "hambatan": "Proteksi Cloudflare",
+        "tingkat": "Tinggi",
+        "detail": "Teramati request ke cdn-cgi/challenge-platform yang aktif. Endpoint berhasil di dalam browser bersesi. Perilaku dari server headless belum diketahui. Tidak ada upaya mengakalinya."
+      },
+      {
+        "no": 3,
+        "hambatan": "Tidak ada data broker per saham, running trade, maupun order flow",
+        "tingkat": "Tinggi",
+        "detail": "Fitur 15 sampai 17 mustahil tanpa lisensi IDX ITCH."
+      },
+      {
+        "no": 4,
+        "hambatan": "Harga hanya End of Day",
+        "tingkat": "Sedang",
+        "detail": "Data intraday hanya melalui lisensi berbayar."
+      },
+      {
+        "no": 5,
+        "hambatan": "Tanpa penyesuaian corporate action",
+        "tingkat": "Sedang",
+        "detail": "Backtest akan menghasilkan angka yang salah tanpa penyesuaian ini."
+      },
+      {
+        "no": 6,
+        "hambatan": "Banyak halaman server-side rendered tanpa endpoint",
+        "tingkat": "Sedang",
+        "detail": "Daftar Saham, Stock Screener, UMA, Suspensi, dan Notasi Khusus. Alternatifnya adalah parsing HTML, yang justru lebih jelas masuk definisi scraping."
+      },
+      {
+        "no": 7,
+        "hambatan": "Kamus field Remarks tidak terdokumentasi",
+        "tingkat": "Rendah",
+        "detail": "Perlu reverse-engineering."
+      },
+      {
+        "no": 8,
+        "hambatan": "Endpoint tidak berversi dan tidak dijanjikan stabil",
+        "tingkat": "Sedang",
+        "detail": "Jalur /primary/ adalah backend internal aplikasi Nuxt yang dapat berubah kapan saja tanpa pemberitahuan."
+      }
+    ],
+    "langkah_legal_segera": [
+      "Hubungi BEI melalui halaman Layanan Data BEI bagian Hubungi Kami atau Cara Berlangganan. Jelaskan bahwa produk adalah website screener saham Indonesia yang mengonsumsi data End of Day saja dengan sekitar 1 request per hari setelah backfill. Minta quotation untuk IDX Equity EoD Basic atau Professional dan klarifikasi lisensi Display versus Non-Display.",
+      "Secara paralel, minta penawaran dari PT RTI Infokom dan PT IQ Plus Prima sebagai redistributor lokal, yang seringkali lebih terjangkau dan tanpa kewajiban leased line 8.5 Mbps.",
+      "Konsultasikan dengan penasihat hukum apakah menampilkan harga tertunda atau End of Day dengan atribusi pada produk komersial memerlukan lisensi penuh."
+    ],
+    "langkah_teknis_segera": [
+      "Ganti startDate dan endDate menjadi date=YYYYMMDD. Hapus draw, start, dan length karena diabaikan.",
+      "Tambahkan assertion bahwa resp.data.length lebih dari nol DAN resp.data[0].Date diawali tanggal yang diminta. Jika gagal, tandai hari tersebut dan jangan simpan.",
+      "Bangun kalender hari bursa dari halaman Jadwal Libur Bursa agar akhir pekan dan hari libur tidak memicu alarm palsu.",
+      "Uji GetStockSummary dengan date=20260814 dari server Anda, bukan dari browser, untuk mengetahui apakah Cloudflare memblokir. Hasil uji ini menentukan apakah otomatisasi layak secara teknis sama sekali."
+    ],
+    "verifikasi_membutuhkan_tindakan_pengguna": [
+      "Tombol Unduh tidak diklik pada halaman mana pun karena mengunduh file memerlukan izin eksplisit. Jika ingin format ekspor XLSX atau CSV resmi dipetakan, yang mungkin merupakan jalur lebih sah daripada memanggil /primary/, berikan konfirmasi.",
+      "Jika tersedia request DevTools untuk UMA, Suspensi, Notasi Khusus, Aksi Korporasi, atau Kalender, kirimkan versi Copy as cURL yang sudah dibersihkan dari cookie, header autentikasi, dan token. Cukup metode, URL, dan query string.",
+      "Uji ulang GetShortSellSummary pada hari bursa aktif, karena hasil 0 baris pada hari Sabtu mungkin bukan perilaku normal."
+    ]
+  },
+  "sumber": [
+    {
+      "judul": "Ringkasan Saham",
+      "url": "https://www.idx.co.id/id/data-pasar/ringkasan-perdagangan/ringkasan-saham/"
+    },
+    {
+      "judul": "Ringkasan Broker",
+      "url": "https://www.idx.co.id/id/data-pasar/ringkasan-perdagangan/ringkasan-broker/"
+    },
+    {
+      "judul": "Daftar Saham",
+      "url": "https://www.idx.co.id/id/data-pasar/data-saham/daftar-saham/"
+    },
+    {
+      "judul": "Laporan Keuangan dan Tahunan",
+      "url": "https://www.idx.co.id/id/perusahaan-tercatat/laporan-keuangan-dan-tahunan/"
+    },
+    {
+      "judul": "Keterbukaan Informasi",
+      "url": "https://www.idx.co.id/id/perusahaan-tercatat/keterbukaan-informasi/"
+    },
+    {
+      "judul": "Profil Perusahaan Tercatat",
+      "url": "https://www.idx.co.id/id/perusahaan-tercatat/profil-perusahaan-tercatat/"
+    },
+    {
+      "judul": "Stock Screener",
+      "url": "https://www.idx.co.id/id/investhub/stock-screener/"
+    },
+    {
+      "judul": "Layanan Data BEI",
+      "url": "https://www.idx.co.id/id/produk/layanan-data-bei"
+    },
+    {
+      "judul": "Syarat Penggunaan",
+      "url": "https://www.idx.co.id/id/syarat-penggunaan"
+    }
+  ]
+}
